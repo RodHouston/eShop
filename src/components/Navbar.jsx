@@ -1,0 +1,140 @@
+import { Search, ShoppingCartOutlined } from '@material-ui/icons'
+import React from 'react'
+import styled from 'styled-components'
+import { mobile } from '../responsive';
+import { Badge } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, } from 'react-router-dom';
+import { logout} from '../redux/apiCalls';
+import { clearCart } from '../redux/cartRedux';
+
+
+
+const Container = styled.div`
+    height: 60px;
+    // background-color: black;
+    ${mobile({height: '50px'})}
+`
+const Wrapper = styled.div`
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    ${mobile({padding: '10px 0'})}
+`
+const Language = styled.span`
+    font-size: 14px;
+    cursor: pointer;
+    ${mobile({display : 'none'})}
+`
+const SearchContainer = styled.div`
+    border: 1px solid lightgrey;
+    display: flex;
+    align-items: center;
+    margin-left: 25px;
+    padding: 5px;
+`
+const Input =styled.input`
+    border: none;
+    ${mobile({ width: "50px" })}
+`
+const Logo = styled.h1`
+    font-weight: bold;
+    cursor:pointer; 
+    ${mobile({fontSize : '24px'})}
+`
+const Left = styled.div`
+    flex:1;
+    display: flex;
+    align-items: center;
+`
+const Center = styled.div`
+    flex:1;
+    text-align: center;
+`
+const Right = styled.div`
+    flex:1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    ${mobile({ flex: 2, justifyContent: "center" })}
+`
+
+const MenuItem = styled.div`
+    font-size: 14px;
+    cursor:pointer;
+    margin-left:25px;
+    ${mobile({ fontSize: "12px", marginLeft: "10px" })}
+`
+
+
+const Navbar = () => {
+
+    const quantity = useSelector(state=> state.cart.quantity)
+    const dispatch = useDispatch()
+
+    
+//   const {isFetching, error} = useSelector((state) => state.user)
+    
+    const user = useSelector((state) => state.user.currentUser)
+    
+  const handleLogout = (e) => {
+    e.preventDefault()
+    // console.log(user._id);
+    dispatch(clearCart())
+    logout(dispatch)
+  }
+
+   
+
+  return (
+    <Container>
+        <Wrapper> 
+            <Left>
+                <Language>
+                    EN
+                </Language>
+                <SearchContainer>
+                    <Input placeholder='SEARCH'/>
+                    <Search style ={{color:'grey', fontSize: 16}}/>
+                </SearchContainer>
+            </Left>
+            <Center>
+            
+                <Logo onClick={() => {window.location.href="/"}}>Classy & Sassy</Logo>
+                
+            </Center>
+            <Right>
+            {user ? <>
+            <p>Welcome {user.username}</p> </>:  <>
+            <Link to="/register">
+                <MenuItem>
+                    Register
+                </MenuItem>
+                </Link>
+                <Link to="/login">
+                <MenuItem>
+                    Login
+                </MenuItem>
+                </Link>
+                </>
+                }
+                {user ?    <>
+                <MenuItem onClick={handleLogout}>
+                    LogOut
+                </MenuItem>
+                </>
+               : null}
+                    <MenuItem onClick={() => {window.location.href="/cart"}}>
+                        <Badge badgeContent={quantity} overlap="rectangular" color="primary">
+                        <ShoppingCartOutlined/>
+                        </Badge>
+                    </MenuItem>
+                   
+                </Right>            
+        </Wrapper>        
+    </Container>
+  )
+}
+
+export default Navbar
