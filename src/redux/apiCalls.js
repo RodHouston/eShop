@@ -1,13 +1,14 @@
 import { publicRequest } from "../RequestMethods"
+
 import { loginFailure, loginStart, loginSuccess, logOut } from "./userRedux"
 
 export const login = async (dispatch, user)=>{
     dispatch(loginStart())
-    try {
+    try {        
+        const cUser = await publicRequest.post("/auth/login", user)      
+
+        dispatch(loginSuccess(cUser.data));        
         
-        const res = await publicRequest.post("/auth/login", user)
-        dispatch(loginSuccess(res.data));
-        // console.log(res.data);
     } catch (error) {
         dispatch(loginFailure())
     }

@@ -1,17 +1,8 @@
 import { createSlice  } from "@reduxjs/toolkit";
 
 
-
-
-
-
-      
-        // console.log(res);
-    
-
-
-const cartSlice = createSlice({
-    name: "cart",
+const wishSlice = createSlice({
+    name: "wish",
     initialState: {
         id:'',
         products: [],
@@ -19,7 +10,7 @@ const cartSlice = createSlice({
         total:0,
     },
     reducers:{
-        syncCart:(state, action)=>{
+        syncWish:(state, action)=>{
             // console.log(action.payload.products);   
             state.id = action.payload._id;        
             state.quantity = action.payload.products.length;
@@ -32,7 +23,7 @@ const cartSlice = createSlice({
             state.total += action.payload.price* action.payload.quantity;
             // console.log(action.payload.myCart);
         },
-        clearCart:(state)=>{
+        clearWish:(state)=>{
             state.quantity =0;
             state.products = []
             state.total = 0
@@ -40,5 +31,5 @@ const cartSlice = createSlice({
     }
 })
 
-export const { addProduct, clearCart, syncCart } = cartSlice.actions;
-export default cartSlice.reducer;
+export const { addProduct, clearWish, syncWish } = wishSlice.actions;
+export default wishSlice.reducer;

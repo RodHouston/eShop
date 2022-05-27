@@ -34,6 +34,7 @@ const Info = styled.div`
 const Title = styled.h1`
     color: white;
     margin-bottom: 20px;
+    text-shadow: 2px 2px 8px black;
    
 `
 const Button = styled.button`
@@ -43,6 +44,8 @@ const Button = styled.button`
     color: grey;
     cursor: pointer;
     font-weight: 600;
+    box-shadow: 2px 2px 5px black;
+    opacity: .7;
 `
 
 
@@ -50,7 +53,8 @@ const Button = styled.button`
 const CategoryItem = ({item}) => {
   return (
     <Container>
-        <Link to={`/productlist/${item.cat}`}>
+        
+        <Link to={`/productlist2/${item.cat}`} state={item.cat}>
         <Image src={item.img}/>
         <Info>  
             <Title>

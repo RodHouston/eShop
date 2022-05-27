@@ -1,9 +1,6 @@
 import styled from "styled-components"
-
-import { FavoriteBorderOutlined, Search, ShoppingCartOutlined } from '@material-ui/icons'
+import {Search} from '@material-ui/icons'
 import { Link } from "react-router-dom"
-// import { addProduct } from "../redux/cartRedux"
-// import { useDispatch } from "react-redux"
 
 const Info = styled.div`
     width: 100%;
@@ -17,15 +14,15 @@ const Info = styled.div`
     align-items:center;
     justify-content: center;
     opacity: 0;
-    transition: all 0.5s ease;
-   
+    transition: all 0.5s ease;   
 `
 
 const Container = styled.div`
-    box-sizing:border-box;   
-    margin:5px auto;
+    box-sizing:border-box;
+    flex:1;
+    margin:5px;
+    min-width:280px;
     height: 350px;
-    width:275px;   
     display: flex;
     flex-direction:column;
     /* justify-content:center; */
@@ -82,12 +79,6 @@ const InfoDiv = styled.div`
 const Price = styled.p`
     font-size: 16px;
     font-weight: bold;
-    color: teal;
-    margin-bottom: 5px;
-`
-const SalePrice = styled.p`
-    font-size: 16px;
-    font-weight: bold;
     color: red;
     margin-bottom: 5px;
 `
@@ -105,41 +96,28 @@ const Desc = styled.p`
     font-size:14px;
     font-weight: bold;      
 `
+const WholeSale = ({item}) => {
 
-const Product = ({item}) => {
-
-    // const dispatch = useDispatch()
-
-    const handleAddToCart = async () => {      
-        // dispatch(addProduct({...product, quantity, color, size}))
-    }
-
-
-  return (
-      <>
-     
+   return (
     <Container>
-        <Circle/>
-        <Image src={item.img}/>
-        <Link to={`/product/${item._id}`} state={item}>
-        <Info>
-            <Icon onClick={handleAddToCart}>
-                <ShoppingCartOutlined/>
-            </Icon>
+        <Circle/>        
+        <Image src={item.img}/>        
+        <Link to={`/wholesale/${item._id}`}>
+        <Info>            
             <Icon>                
                 <Search style ={{color:'grey', fontSize: 16}}/>                
             </Icon>                    
         </Info>
         </Link>
         <InfoDiv>
-           {item.onSale ? <><SalePrice>${item.salePrice?.toFixed(2)} on sale</SalePrice> 
-            <RegPrice>${item.price.toFixed(2)}</RegPrice> </> : <Price>${item.price?.toFixed(2)}</Price> }
+           <Price>${item.price.toFixed(2)}</Price>  
+            <RegPrice>${item.price.toFixed(2)}</RegPrice>
             <Title>{item.title}</Title>
             <Desc>{item.desc}</Desc>
         </InfoDiv>
+       
     </Container>
-    </>
   )
 }
 
-export default Product
+export default WholeSale

@@ -8,6 +8,9 @@ const userSlice = createSlice({
        error: false
     },
     reducers:{
+        loginReset:(state)=>{
+            state.isFetching=false;
+        },
         loginStart:(state)=>{
             state.isFetching=true;
         },
@@ -21,10 +24,10 @@ const userSlice = createSlice({
         },
         logOut:(state) => {
             state.currentUser = null
-            // console.log('here');
+            // console.log('here logout');
         }        
     }
 })
 
-export const { loginStart, loginSuccess, loginFailure, logOut } = userSlice.actions;
+export const { loginStart, loginSuccess, loginFailure, logOut, loginReset } = userSlice.actions;
 export default userSlice.reducer;

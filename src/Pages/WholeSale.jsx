@@ -9,15 +9,12 @@ import { publicRequest, userRequest} from '../RequestMethods'
 import { mobile } from "../responsive";
 import { useDispatch, useSelector } from 'react-redux'
 import { syncWish } from '../redux/wishRedux';
-import { clearCurrProduct, setCurrProduct } from '../redux/sideMenuRedux';
-import Zoom from 'react-img-zoom'
-
 
 
 
 
 const Container = styled.div`
-    ${mobile({ paddingTop: "50px"})}
+    
 `
 
 const Wrapper = styled.div`
@@ -28,21 +25,15 @@ const Wrapper = styled.div`
 `
 
 const ImgContainer = styled.div`
-  display:flex;
-  max-width: 600px;
-  max-height: 80vh;
-  justify-content:center;
-  align-items:center;
   flex: 1;
   border: 2px solid ${props => props.color};
-  z-index:2;
 `
 
 const Image = styled.img`
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 90vh;
   object-fit: cover; 
-  margin:0 auto;
+  
   ${mobile({ height: "40vh" })}
 `
 const Title = styled.h1`
@@ -56,16 +47,6 @@ const Desc = styled.p`
 const Price = styled.span`
   font-weight: 100;
   font-size: 40px;
-`
-const RegPrice = styled.span`
-  font-weight: 100;
-  font-size: 30px; 
-  background: linear-gradient(to left top, transparent 47.75%, currentColor 49.5%, transparent 52.25%);
-`
-const SalePrice = styled.span`
-  font-weight: 100;
-  font-size: 40px;
-  color: red;
 `
 
 const InfoContainer = styled.div`
@@ -230,26 +211,22 @@ const ToCart = styled.button`
   background-color: lightblue;
   cursor:pointer;
 `
-const Product = () => {
+const WholeSale = () => {
 
     const location = useLocation()
     const id = location.pathname.split('/')[2]
-    const product = location.state
 
-    // const [product, setProduct] = useState(location.state)  
+    const [product, setProduct] = useState([])  
     const [quantity, setQuantity] = useState(1)
     const [newQuantity, setNewQuantity] = useState(1)
-    const [color, setColor] = useState(product?.color && product?.color[0])
-    const [size, setSize] = useState(product?.size && product?.size[0])
+    const [color, setColor] = useState(product.color && product.color[0])
+    const [size, setSize] = useState(product.size && product.size[0])
 
     const dispatch = useDispatch()
     
     const user = useSelector((state) => state.user.currentUser)
     const cart = useSelector(state => state.cart)
     const wish = useSelector(state => state.wish)
-   
-
-    // console.log(wish);
     const [myCart, setMyCart] = useState(cart)
     const [myWish, setMyWish] = useState(wish)
     const [mess, setMess] = useState('')
@@ -273,8 +250,8 @@ const Product = () => {
 
 
     const handleAddToCart = async (item, location) => {       
-      setToggle(true)  
-            
+      setToggle(true)
+       
       let match = false
       let quant = false
       let loc = ''
@@ -288,7 +265,7 @@ const Product = () => {
         setPreBtn('wishlist')
       }      
 
-      setPreview('open')  
+      setPreview('open')     
       setMess(`Successfully added to ${location}`)
       loc.products.map((product, index) => { 
          if(product._id === item._id && product.color === color && product.size === size){           
@@ -299,6 +276,7 @@ const Product = () => {
           }
           if(match &&  product.quantity !== quantity){             
             let newQuant = quantity +  product.quantity
+            setMess('Item quantity change')
             setQuantity(newQuant)            
             quant = true    
              }  else if(match &&  product.quantity === quantity) {
@@ -306,32 +284,35 @@ const Product = () => {
                setMess(`Item Already In ${location}`)
              }   
             return true
-           }
-          )
+      }
+      )
+
       if (!match){
+        console.log('in no match');
         try {            
-           res = await userRequest.put(`/carts/${loc.id}/${user._id}/${location}`, {...product, quantity, color, size})
+          res =  await userRequest.put(`/carts/${loc._id}/${user._id}/${location}`, {...product, quantity, color, size})
+            console.log(res);  
         } catch (error) {    
       }
     }
-      console.log(quant)
+
+      
+      console.log(res)
       if(quant){
         console.log('add to quaintity');
         try {     
-          res =  await userRequest.put(`/carts/item/${loc.id}/${user._id}/${i}/${location}/add/${quantity}`, cart)
-         // console.log(res);   
+           res = await userRequest.put(`/carts/item/${loc._id}/${user._id}/${i}/${location}/add/${quantity}`, cart)
+          
          } catch (error) {    
        }
       }
       setToggle(false)
-      
       if (res.data){
         if(location === 'Cart'){
         dispatch(syncCart(res.data))
       }else if(location === 'Wish'){
         dispatch(syncWish(res.data))
       }  }
-      
     
   }    
    
@@ -340,57 +321,58 @@ const Product = () => {
       setPreview('close')
     }
 
-    // useEffect(() => {      
-    //     const getMyCart = async () => {      
-    //       try {      
-    //         const res = await userRequest.get('/carts/find/Cart/'+ user._id)
-    //         // console.log(res);
-    //         if (res.data === null & isSubscribed) { setMyCart(cart) 
-    //           }  else {setMyCart(res.data) }         
-            
-    //       } catch (error) {
-            
-    //       }        
-    //       try {      
-    //         const wish = await userRequest.get('/carts/find/Wish/'+ user._id)
-    //         // console.log(res);
-    //         if (wish.data === null) { setMyWish(myWish) 
-    //           }  else {setMyWish(wish.data) }         
-            
-    //       } catch (error) {
-            
-    //       }        
-    //     }
-    //     getMyCart()
-    //     return () => setIsSubscribed(false)
-    //   }, [cart, wish,myWish, user?._id, mess, isSubscribed])
 
 
 
-    // useEffect(() => {
+    useEffect(() => {
+      
+        const getMyCart = async () => {      
+          try {      
+            const res = await userRequest.get('/carts/find/Cart/'+ user._id)
+            // console.log(res);
+            if (res.data === null & isSubscribed) { setMyCart(cart) 
+              }  else {setMyCart(res.data) }         
+            
+          } catch (error) {
+            
+          }        
+          try {      
+            const wish = await userRequest.get('/carts/find/Wish/'+ user._id)
+            // console.log(res);
+            if (wish.data === null) { setMyWish(myWish) 
+              }  else {setMyWish(wish.data) }         
+            
+          } catch (error) {
+            
+          }        
+        }
+        getMyCart()
+        return () => setIsSubscribed(false)
+      }, [cart, wish,myWish, user?._id, mess, isSubscribed])
+
+
+
+    useEffect(() => {
      
-    //     const getProduct = async ()=>{
-            
-    //         try {
-    //             const res = await publicRequest.get("/products/find/" +id)
-    //             if (isSubscribed) {
-    //             setProduct(res.data)
-    //             // console.log(res.data.size);
-    //             setSize(res.data.size[0])
-    //             setColor(res.data.color[0])
-    //             dispatch(setCurrProduct(res.data))
-    //             }
-    //         } catch (error) {
+        const getDesign = async ()=>{
+            try {                          
+                const res = await publicRequest.get("/designs/find/" +id)
+                if (isSubscribed) {
+                setProduct(res.data)
+                // console.log(res.data.size);
+                setSize(res.data.size[0])
+                setColor(res.data.color[0])
+                }
+            } catch (error) {
                 
-    //         }
-    //     }
+            }
+        }
         
-    //     getProduct()
-    //     return () => setIsSubscribed(false)
-    //   }, [id, isSubscribed])
+        getDesign()
+        return () => setIsSubscribed(false)
+      }, [id, isSubscribed])
       
-      
-      // console.log(process.env.NODE_ENV );
+    //   console.log();
     //   console.log(product.color && product.color[1]);
     //   console.log('color ' + color);
     //   console.log(product.size && product.size[1]);
@@ -399,24 +381,18 @@ const Product = () => {
   return (
 
 
-    <Container >   
-      
+    <Container >
+    
       <Wrapper >
-            <ImgContainer color={color} >          
-            <Zoom
-              img={product.img}
-              zoomScale={3}
-              width={400}
-              height={400}
-              transitionTime={0.5}
-            />
+            <ImgContainer color={color} >
+                <Image src={product.img}/>
             </ImgContainer>
             <InfoContainer>
-                <Title>{product.title}</Title>
+                <Title>{product.title} #{product.stockNumber}</Title>
                 <Desc>
                 {product.desc}
                 </Desc>
-                {product.onSale ? <> <SalePrice>$ {product.salePrice}</SalePrice> on sale from <RegPrice>$ {product.price}</RegPrice> </>: <Price>$ {product.price}</Price>}
+                <Price>$ {product.price}</Price>
                 <FilterContainer>
                     <Filter>
                         <FilterTitle>Color:</FilterTitle>
@@ -478,4 +454,4 @@ const Product = () => {
   )
 }
 
-export default Product
+export default WholeSale 

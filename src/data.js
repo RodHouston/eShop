@@ -8,9 +8,9 @@ export const sliderItems = [
     },
     {
       id: 2,
-      img: "../../Photos/slide2.png",
-      title: "AUTUMN COLLECTION",
-      desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
+      img: "https://cdn.shopify.com/s/files/1/0061/4236/1700/products/Giorno-JoJos-Bizarre-Adventure-Womens-Anime-T-Shirt_09bcf421-67d1-42ba-aa22-8938b8d3ac44_250x250@2x.png?v=1628727078",
+      title: "Graphic Tshirts",
+      desc: "DON'T COMPROMISE ON STYLE! GET CUSTOM DESIGNS NO ONE ELSE HAS.",
       bg: "coral",
     },
     {
@@ -25,21 +25,81 @@ export const sliderItems = [
   export const categories = [
     {
       id: 1,
-      img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      title: "SHIRT STYLE!",
-      cat:'shirt'
+      img: "https://i.pinimg.com/originals/ce/5c/87/ce5c87e0c692c952d820f8d7716fff4e.jpg",
+      title: "Graphic Prints!",
+      cat:'graphics',
+      subCats: [
+        {graphics: [ 'all', 'weed', 'anime', 'cartoon', 'sports', ' music', 'text', 'messege', 'rick and morty', 'love', 'supreme', 'pricess', 'flowers', 'fun', 'among us', 'other'],
+          subTitle:'Graphics'},        
+          ],
     },
     {
       id: 2,
-      img: "https://www.landsend.com/article/clothing-gifts-for-kids/images/feat-m.jpg",
-      title: "Kids Clothing",
-      cat:'kids'
+      img: "https://www.carters.com/content/dam/ecomm/ec_creative_carters/2022/cslp%27s/car_q2_2022_cslps/tbkb/CAR_Q2_2022_KB_ShopAll.jpg",
+      title: "Boy Clothing",
+      cat:'boys',      
+      subCats: [
+          {tops: [ 'short sleeve shirts', 'long sleeve shirts','sweaters', 'hoodies'],
+            subTitle:'Tops'}, 
+          {bottoms: [ 'shorts', 'jeans','sweats'],
+            subTitle:'Bottoms'},
+          {sets: ['pajamas','sweatsuits'],
+            subTitle: 'Sets'},
+          {jewelry: ['necklaces', 'bracelletes','rings', 'watches'],
+            subTitle: 'Jewelry'},
+          {graphicShirt: ['designs'],
+            subTitle: 'Graphic Tees'}]
     },
     {
       id: 3,
+      img: "https://oldnavy.gap.com/Asset_Archive/ONWeb/content/0028/755/195/assets/220316_51-M6637_G_DP_NewArrivals.jpg",
+      title: "Girl Clothing",
+      cat:'girls',      
+      subCats: [
+        {
+          tops: [ 'short sleeve shirts', 'long sleeve shirts','sweaters', 'hoodies'],
+          subTitle:'Tops'
+              }, 
+                {bottoms: [ 'shorts', 'jeans','sweats'],
+                subTitle:'Bottoms'},
+                {sets: [ 'rompers', 'pajamas','sweatsuits'],
+                subTitle: 'Sets'},
+                {jewelry: ['necklaces', 'bracelletes','rings', 'watches'],
+                subTitle: 'Jewelry'},
+                {graphicShirt: [ 'designs'],
+                subTitle: 'Graphic Tees'}]
+    },
+    {
+      id: 4,
       img: "https://images.pexels.com/photos/2983464/pexels-photo-2983464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      title: "Other Clothing",
-      cat:'coat'
+      title: "Women Clothing",
+      cat:'ladies',
+      subCats: [{tops: ['short sleeve shirts', 'long sleeve shirts','sweaters', 'hoodies'],
+      subTitle:'Tops'}, 
+                {bottoms: ['shorts', 'jeans','sweats'],
+                subTitle:'Bottoms'},
+                {sets: ['rompers', 'pajamas','sweatsuits'],
+                subTitle: 'Sets'},
+                {jewelry: ['necklaces', 'bracelletes','rings', 'watches'],
+                subTitle: 'Jewelry'},
+                {graphicShirt: [ 'designs'],
+                subTitle: 'Graphic Tees'}]
+    },
+    {
+      id: 5,
+      img: "https://images.squarespace-cdn.com/content/v1/57fa9cafe4fcb5e6ab28144a/1601311023900-GPNHPV8VDVFEUR4Q4LHB/sustainable+men%27s+clothing?format=1000w",
+      title: "Men Clothing",
+      cat:'men',
+      subCats: [{tops: [ 'short sleeve shirts', 'long sleeve shirts','sweaters', 'hoodies'],
+      subTitle:'Tops'}, 
+                {bottoms: [ 'shorts', 'jeans','sweats'],
+                subTitle:'Bottoms'},
+                {sets: [ 'pajamas','sweatsuits'],
+                subTitle: 'Sets'},
+                {jewelry: [ 'necklaces', 'bracelletes','rings', 'watches'],
+                subTitle: 'Jewelry'},
+                {graphicShirt: [ 'designs'],
+                subTitle: 'Graphic Tees'}]
     },
   ];
 

@@ -2,6 +2,7 @@ import { ArrowLeftOutlined, ArrowRightOutlined } from '@material-ui/icons'
 import React ,{ useState} from 'react'
 import styled from 'styled-components'
 import { sliderItems } from '../data'
+import { userRequest } from '../RequestMethods';
 import { mobile } from "../responsive";
 
 
@@ -30,7 +31,7 @@ const Arrow =styled.div`
     right: ${props => props.direction === 'right' && '10px'};
     cursor: pointer;
     opacity: .50;
-    z-index:2;
+    z-index:1;
 `
 const Wrapper = styled.div`
     height: 100%;
@@ -88,6 +89,15 @@ const Slider = () => {
         }
     }
 
+    const APItest = async () => {
+        try {
+           const test =  await userRequest.get('/')
+            console.log(test);
+            } catch (err) {
+            console.log(err);
+        }
+    }
+
   return (
     <Container>
         <Arrow direction='left' onClick={()=>handleClick('left')}>
@@ -107,7 +117,7 @@ const Slider = () => {
                     <Desc>
                         {item.desc}
                     </Desc>
-                    <Button>SHOW NOW</Button>
+                    <Button onClick={APItest}>SHOW NOW</Button>
                 </InfoContainer>
                 </Slide>
 
@@ -116,7 +126,6 @@ const Slider = () => {
 
         <Arrow direction='right' onClick={()=>handleClick('right')}>
             <ArrowRightOutlined>
-
             </ArrowRightOutlined>
         </Arrow>
     </Container>

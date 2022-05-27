@@ -1,12 +1,13 @@
 import styled from 'styled-components'
 import React, {useState} from 'react'
-import Products from '../components/Products'
+import WholeSales from '../components/WholeSales'
 import { mobile } from "../responsive";
 import { useLocation } from 'react-router-dom'
 
 
+
 const Container = styled.div`
-    margin-top:40px;
+    
 `
 const Title = styled.h1`
     margin: 20px;
@@ -15,11 +16,6 @@ const Title = styled.h1`
 const FilterContainer = styled.div`
     display: flex;
     justify-content: space-between;
-`
-const ProductDiv = styled.div`
-    display: flex;
-    align-items:center;
-    margin: 0 auto;
 `
 
 const Filter = styled.div`
@@ -42,18 +38,14 @@ const Select = styled.select`
 const Option = styled.option``;
 
 
-const ProductList2 = (cats) => {
+const ProductList = () => {
 
     const [filters, setFilters] = useState({})
     const [sort, setSort] = useState("newest")
 
     const location = useLocation()
-    const cat = location.pathname.split('/')[2].replaceAll('%20', ' ')
-    const gen = location.state
-    
-    
-console.log(gen);
-console.log(cat);
+    const cat = location.pathname.split('/')[2]
+
     const handleFilters = (e) => {
         let value = e.target.value;
         let name = e.target.name;
@@ -66,10 +58,7 @@ console.log(cat);
     
   return (
     <Container>
-        {gen &&
-        <Title> {gen}</Title>
-                    }
-        <Title>{cat}</Title>
+        <Title>WholeSale</Title>
         <FilterContainer>
             <Filter>
             <FilterText>Filter Products:</FilterText>
@@ -111,11 +100,10 @@ console.log(cat);
             </Select>
             </Filter>
         </FilterContainer>
-        <ProductDiv>
-            <Products cat={cat} gen={gen} filters={filters} sort={sort}/>
-        </ProductDiv>
+        <WholeSales cat={cat} filters={filters} sort={sort}/>
+       
     </Container>
   )
 }
 
-export default ProductList2
+export default ProductList

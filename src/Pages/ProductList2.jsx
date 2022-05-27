@@ -3,14 +3,17 @@ import React, {useState} from 'react'
 import Products from '../components/Products'
 import { mobile } from "../responsive";
 import { useLocation } from 'react-router-dom'
+import {categories} from '../data'
 
 
 const Container = styled.div`
     margin-top:40px;
+    
 `
 const Title = styled.h1`
     margin: 20px;
     text-transform: capitalize;
+    text-align:center;
 `
 const FilterContainer = styled.div`
     display: flex;
@@ -18,6 +21,7 @@ const FilterContainer = styled.div`
 `
 const ProductDiv = styled.div`
     display: flex;
+    width:80%;
     align-items:center;
     margin: 0 auto;
 `
@@ -41,19 +45,41 @@ const Select = styled.select`
 `;
 const Option = styled.option``;
 
+const ContentContainer = styled.div`
+   display:flex;
+   flex-direction:row;
+`
+const SideBarDiv= styled.div`
+    box-sizing:border-box;
+    /* background-color:red; */
+    width:200px;
+    min-height:100%;
+    padding-left: 40px;
+    ${mobile({ display: "none" })}
+`
+const CatTitle = styled.div`
+    font-weight:bold;
+`
+const Cat = styled.div`
+    display:flex;   
+    flex-direction:column;
+    /* background-color:yellow; */
+    margin:5px;
+`
 
-const ProductList2 = (cats) => {
+const ProductList2 = () => {
 
     const [filters, setFilters] = useState({})
     const [sort, setSort] = useState("newest")
 
     const location = useLocation()
     const cat = location.pathname.split('/')[2].replaceAll('%20', ' ')
-    const gen = location.state
-    
+    const gen = cat === 'graphics' ? 'all' : cat;
+    const data = categories.find(item=> item.cat.includes(cat))
+    const sub = data.subCats
     
 console.log(gen);
-console.log(cat);
+console.log(sub);
     const handleFilters = (e) => {
         let value = e.target.value;
         let name = e.target.name;
@@ -63,13 +89,13 @@ console.log(cat);
             setFilters({...filters,[e.target.name]: value})
         }
     }
-    
+  
   return (
     <Container>
-        {gen &&
-        <Title> {gen}</Title>
-                    }
-        <Title>{cat}</Title>
+        
+        <Title> {cat}</Title>
+                    
+        
         <FilterContainer>
             <Filter>
             <FilterText>Filter Products:</FilterText>
@@ -111,9 +137,21 @@ console.log(cat);
             </Select>
             </Filter>
         </FilterContainer>
-        <ProductDiv>
-            <Products cat={cat} gen={gen} filters={filters} sort={sort}/>
-        </ProductDiv>
+        <ContentContainer>
+            <SideBarDiv>
+                {sub.map((cats, index) => (
+                    <>
+                    <CatTitle>{Object.values(cats)[1]}</CatTitle>
+                    <Cat>{Object.values(cats)[0].map((cat, index) => (
+                       <p>{cat}</p> 
+                    ))}</Cat>
+                    </>
+                ))}
+            </SideBarDiv>
+            <ProductDiv>
+                <Products cat={gen} gen={cat} filters={filters} sort={sort}/>
+            </ProductDiv>
+        </ContentContainer>
     </Container>
   )
 }

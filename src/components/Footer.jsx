@@ -14,7 +14,7 @@ const Left = styled.div`
     flex-direction: column;
     padding: 20px;
 `
-const Logo = styled.h1``
+
 
 const Desc = styled.p`
     margin: 20px 0px;
@@ -70,13 +70,40 @@ const ContactItem = styled.div`
 const Payment = styled.img`
     width: 50%;
 `;
+const LogoText = styled.h1`
+    font-weight: bold;
+    cursor:pointer; 
+    ${mobile({fontSize : '24px'})}
+`
+const Logo = styled.img`
+    font-weight: bold;
+    cursor:pointer; 
+    width:50px;
+    height:50px;
+    ${mobile({fontSize : '24px'})}
+`
+const LogoDiv = styled.div`
+    flex:1;
+    text-align: center;
+    display:flex;
+    flex-direction:row;
+    align-items: center;    
+    ${mobile({flexDirection : 'column'})}
+`
 
 
 const Footer = () => {
+
+
+// console.log('footer')
   return (
     <Container>
         <Left>
-            <Logo>SAssy</Logo>
+        <LogoDiv>
+                <Logo src='../Photos/c&Slogo.png'></Logo>
+                <LogoText onClick={() => {window.location.href="/"}}>Classy & Sassy</LogoText>
+                
+            </LogoDiv>
             <Desc>
                 There are many variations of passages of Lorem Ipsum available, but
                 the majority have suffered alteration in some form, by injected
@@ -100,16 +127,18 @@ const Footer = () => {
         <Center>
             <Title>Useful Links</Title>
             <List>
-            <ListItem>Home</ListItem>
-            <ListItem>Cart</ListItem>
-            <ListItem>Man Fashion</ListItem>
-            <ListItem>Woman Fashion</ListItem>
-            <ListItem>Accessories</ListItem>
-            <ListItem>My Account</ListItem>
-            <ListItem>Order Tracking</ListItem>
-            <ListItem>Wishlist</ListItem>
-            <ListItem>Wishlist</ListItem>
-            <ListItem>Terms</ListItem>
+           <ListItem><a href='/'>Home</a></ListItem>
+            <ListItem><a href='/cart'>Cart</a></ListItem>            
+            <ListItem><a href='/productlist2/men'>Men Fashion</a></ListItem>
+            <ListItem><a href='/productlist2/ladies'>Women Fashion</a></ListItem>
+            <ListItem><a href='/productlist2/boys'>Boy's Fashion</a></ListItem>
+            <ListItem><a href='/productlist2/girls'>Girl's Fashion</a></ListItem>
+            <ListItem><a href='/productlist2/unisex'>Unisex Fashion</a></ListItem>
+            <ListItem><a href='/productlist2/graphics'>Print Designs</a></ListItem>
+            <ListItem><a href='/'>Accessories</a></ListItem>
+            <ListItem><a href='/'>My Account</a></ListItem>
+            <ListItem><a href='/'>Order Tracking</a></ListItem>        
+            <ListItem><a href='/'>Wholesale</a></ListItem>        
             </List>
         </Center>
         <Right>

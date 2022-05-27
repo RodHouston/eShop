@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components'
 import { login } from '../redux/apiCalls';
+
 import {mobile} from "../responsive";
+
+
+
 
 const Container = styled.div`
   width: 100vw;
@@ -76,10 +80,21 @@ const Login = () => {
 
   const {isFetching, error} = useSelector((state) => state.user)
 
+  
+
   const handleLogin = (e) => {
     e.preventDefault()
+  
     login(dispatch, {username, password})
   }
+
+
+  useEffect(() => {
+
+    // dispatch(loginReset())
+   
+  }, []);
+
 
   return (
     <Container>
