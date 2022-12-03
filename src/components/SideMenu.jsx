@@ -18,7 +18,7 @@ const Container = styled.div`
     overflow:scroll;
     z-index: 5;
     height: 100vh;
-    width: 75vw;
+    width: 25vw;
     top: 0;
     left:0;
     flex-direction: column;

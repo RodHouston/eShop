@@ -3,6 +3,7 @@ import cartReducer from "./cartRedux"
 import userReducer from "./userRedux"
 import wishReducer from './wishRedux'
 import menuReducer from "./sideMenuRedux";
+import photoReducer from "./photoRedux";
 
 import {
     persistStore,
@@ -22,7 +23,14 @@ import {
     storage,
   };
   
-  const rootReducer = combineReducers({ user: userReducer, cart: cartReducer, wish: wishReducer, menu: menuReducer});
+  const rootReducer = combineReducers(
+    { 
+      user: userReducer, 
+      cart: cartReducer, 
+      wish: wishReducer, 
+      menu: menuReducer,
+      photo: photoReducer
+    });
   
   const persistedReducer = persistReducer(persistConfig, rootReducer);
 

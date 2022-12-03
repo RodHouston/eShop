@@ -7,7 +7,7 @@ const menuSlice = createSlice({
         mainMenu:false,       
         category:false,       
         subCat:false, 
-        currProduct:[],
+        currProduct:{},
         dropDownMenu:false      
     },
     reducers:{
@@ -31,7 +31,7 @@ const menuSlice = createSlice({
             state.currProduct= action.payload
         },
         clearCurrProduct:(state) =>{
-            state.currProduct= []
+            state.currProduct= {}
         },
         openDropDownMenu:(state)=>{
             // console.log(action.payload.products);   

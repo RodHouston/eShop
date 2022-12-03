@@ -244,7 +244,7 @@ const Wishlist = () => {
                 {myWish && myWish.products?.length=== 0 ? <><p>No Items in List</p></> : myWish && myWish.products?.map((product, index)=>(                
                 <Product key={product._id + index}>
                 <ProductDetail>
-                  <Link to={ product.desc === 'design ' ?  `/wholesale/${product._id}` :`/product/${product._id}`}>
+                  <Link to={ product.isDesign ? `/wholesale/${product._id}` :`/product/${product._id}`} state={product}>
                       <Image src={product.img}/>
                    </Link>
                   <Details>

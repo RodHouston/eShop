@@ -6,7 +6,7 @@ import Products from '../components/Products'
 //import { mobile } from "../responsive";
 import Slider from '../components/Slider'
 import { syncCart } from '../redux/cartRedux'
-import { closeDropDownMenu, openDropDownMenu } from '../redux/sideMenuRedux'
+import { clearCurrProduct, closeDropDownMenu, openDropDownMenu } from '../redux/sideMenuRedux'
 import { syncWish } from '../redux/wishRedux'
 import { userRequest } from '../RequestMethods'
 
@@ -50,6 +50,7 @@ const Home = () => {
   }   
 }
 } 
+
   dispatch(closeDropDownMenu(false))
   getMyCart()
 }, [user, user?._id, dispatch])

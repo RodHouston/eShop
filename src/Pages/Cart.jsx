@@ -178,7 +178,10 @@ const Button2 = styled.button`
   margin:10px;
   border-radius: 10px;
 `;
-
+const PayPalDiv = styled.div`
+  position: relative;
+  z-index:1;
+`
 
 const Cart = () => {
 
@@ -202,7 +205,7 @@ const Cart = () => {
   const currency = "USD"; 
 
   const [PKEY, setPKEY]= useState( '' )
- console.log(currProduct);
+//  console.log(currProduct);
   // console.log(process.env.REACT_APP_PAYPAL_KEY );
 
   const dispatch = useDispatch()
@@ -264,7 +267,7 @@ const handleItemCount = async (productId, action, quan) => {
         try {      
           // console.log('try PKEY');
           const res = await userRequest.get('/orders/PKEY/'+ user._id)                 
-          console.log(res.data) 
+          // console.log(res.data) 
          setPKEY(res.data)
          setIsLoading(false)
         } catch (error) {          
@@ -336,7 +339,7 @@ const handleItemCount = async (productId, action, quan) => {
     // console.log('cart');
     // console.log(cart);
 
-   console.log(currProduct);
+  //  console.log(currProduct);
 
 
   return (
@@ -347,9 +350,13 @@ const handleItemCount = async (productId, action, quan) => {
         <Wrapper>
             <Title>YOUR CART</Title>
             <Top>
-              <Link to={`/productlist/${currProduct.subCategories[0]}`}  state={currProduct.gender[0]}>
+             { currProduct=== undefined ? <Link to={`/productlist/${currProduct?.subCategories[0]}`}  state={currProduct?.gender[0]}>
                 <TopButton >CONTINUE SHOPPING</TopButton>
-              </Link>                
+              </Link>  
+               :
+               <Link to={`/`} >
+               <TopButton >CONTINUE SHOPPING</TopButton>
+             </Link>                   }     
               <TopButton onClick={deleteCart}>CLEAR CART</TopButton>                    
               <TopTexts>
                   <TopText>CART ITEMS ({cart && cart.products.length})</TopText>
@@ -371,7 +378,7 @@ const handleItemCount = async (productId, action, quan) => {
                 {cart && cart.products.length=== 0 ? <><p>No Items in Cart</p></> : cart && cart.products.map((product, index)=>(                
                 <Product key={product._id + index}>
                 <ProductDetail>
-                <Link to={ product.desc === 'design ' ?  `/wholesale/${product._id}` :`/product/${product._id}`}>
+                <Link to={ product.isDesign=== true ? `/wholesale/${product._id}` :`/product/${product._id}`} state={product}>
                     <Image src={product.img}/>
                     </Link>
                      <Details>
@@ -383,7 +390,7 @@ const handleItemCount = async (productId, action, quan) => {
                     </ProductId>
                     <ProductColor color={product.color} />
                     <ProductSize>
-                        <b>Size:</b> {product.size}
+                        <b>Size:</b> {product.isDesign}
                     </ProductSize>
                     </Details>
                 </ProductDetail>
@@ -420,42 +427,43 @@ const handleItemCount = async (productId, action, quan) => {
                 <SummaryItemPrice>$ {cart.total === 0 || cart.total === undefined ? 0 : (cart.total + (shipping - shippingDisc)).toFixed(2)}</SummaryItemPrice>
                 </SummaryItem>
                
-           
-              <PayPalScriptProvider
-                options={{
-                  'client-id': PKEY
-                }}>
+            <PayPalDiv>
+                <PayPalScriptProvider
+                  options={{
+                    'client-id': PKEY
+                  }}>
+                    
+                  <PayPalButtons 
                   
-                <PayPalButtons 
-                 
-                  disabled={false}
-                  
-                  fundingSource={undefined}
-                  createOrder={(data, actions) => {
-                    return actions.order
-                        .create({
-                            purchase_units: [
-                                {
-                                    amount: {
-                                        currency_code: currency,
-                                        value: cart.total === 0 || cart.total === undefined ? 0 : (cart.total + (shipping - shippingDisc)).toFixed(2)
-                                    },
-                                },
-                            ],
-                        })
-                        .then((orderId) => {
-                            // Your code here after create the order
-                            return orderId;
-                        });
-                      }}
-                        onApprove={(data, actions) => {
-                          return actions.order.capture().then(function (details) {
-                              // Your code here after capture the order
-                             showOrder(details)
+                    disabled={false}
+                    
+                    fundingSource={undefined}
+                    createOrder={(data, actions) => {
+                      return actions.order
+                          .create({
+                              purchase_units: [
+                                  {
+                                      amount: {
+                                          currency_code: currency,
+                                          value: cart.total === 0 || cart.total === undefined ? 0 : (cart.total + (shipping - shippingDisc)).toFixed(2)
+                                      },
+                                  },
+                              ],
+                          })
+                          .then((orderId) => {
+                              // Your code here after create the order
+                              return orderId;
                           });
-                      
-                }}/>
-              </PayPalScriptProvider>
+                        }}
+                          onApprove={(data, actions) => {
+                            return actions.order.capture().then(function (details) {
+                                // Your code here after capture the order
+                              showOrder(details)
+                            });
+                        
+                  }}/>
+                </PayPalScriptProvider>
+              </PayPalDiv>
             </Summary>
           </Bottom>
         </Wrapper>

@@ -5,26 +5,28 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { syncCart } from '../redux/cartRedux'
-import { publicRequest, userRequest} from '../RequestMethods'
+import { publicRequest, userRequest } from '../RequestMethods'
 import { mobile } from "../responsive";
 import { useDispatch, useSelector } from 'react-redux'
 import { syncWish } from '../redux/wishRedux';
-import { clearCurrProduct, setCurrProduct } from '../redux/sideMenuRedux';
+import { setCurrProduct } from '../redux/sideMenuRedux';
 import Zoom from 'react-img-zoom'
+import { ThumbNailList } from '../components/ThumbnailList';
+import { setMainPhoto, setThumbnails } from '../redux/photoRedux';
 
 
 
 
 
 const Container = styled.div`
-    ${mobile({ paddingTop: "50px"})}
+    ${mobile({ paddingTop: "50px" })}
 `
 
 const Wrapper = styled.div`
   padding: 50px;
   display: flex; 
   
-  ${mobile({ padding: "10px", flexDirection:"column" })}
+  ${mobile({ padding: "10px", flexDirection: "column" })}
 `
 
 const ImgContainer = styled.div`
@@ -39,8 +41,10 @@ const ImgContainer = styled.div`
 `
 
 const Image = styled.img`
-  max-width: 100%;
-  max-height: 100%;
+  /* max-width: 400px;
+  max-height: 400px; */
+  width: 400px;
+  height: 400px;
   object-fit: cover; 
   margin:0 auto;
   ${mobile({ height: "40vh" })}
@@ -134,7 +138,7 @@ const Amount = styled.span`
     align-items:center;
     margin: 0px 5px;
 `
-    
+
 const Button = styled.button`
   padding: 15px;
   border: 2px solid teal;
@@ -146,13 +150,14 @@ const Button = styled.button`
   }
 `
 const CartPreviewShade = styled.div`
-height: ${props =>props.type === 'open' ? '100%' : '0'};
+height: ${props => props.type === 'open' ? '100%' : '0'};
 width: 100%;
 position: fixed;
 background-color: rgba(0,0,0,.8);
 // background-color: red;
 top: 0;
 left: 0;
+z-index:2;
 // transform: translate(-50%, 0);
 `
 const CartPreview = styled.div`
@@ -166,12 +171,13 @@ justify-content: center;
 // margin: 0 auto;
 top: 50%;
 left: 50%;
-transform: translate(-50%, ${props =>props.type === 'open' ? '0' : '1000px'});
+z-index:2;
+transform: translate(-50%, ${props => props.type === 'open' ? '0' : '1000px'});
 transition: all ease 1s;
 bottom: 0;
 border-top-right-radius: 20px;
 border-top-left-radius: 20px;
-${mobile({ width: "100%", transform: `translate(0, ${props =>props.type === 'open' ? '0' : '1000px'})`})}
+${mobile({ width: "100%", transform: `translate(0, ${props => props.type === 'open' ? '0' : '1000px'})` })}
 `
 
 const Notification = styled.p`
@@ -230,250 +236,268 @@ const ToCart = styled.button`
   background-color: lightblue;
   cursor:pointer;
 `
+
+
+const ThumbnailDiv = styled.div`
+
+display:flex;
+`
+const ThumbnailList = styled.ul`
+list-style-type:none;
+width: 100%;
+padding:8px;
+`
+const ThumbnailItems = styled.li`
+margin: 8px;
+`
+const Thumbnail = styled.img`
+    width: 50px;
+    box-shadow: 2px 2px 8px rgba(0,0,0,.5);
+`
+
 const Product = () => {
 
-    const location = useLocation()
-    const id = location.pathname.split('/')[2]
-    const product = location.state
+  const location = useLocation()
+  const id = location.pathname.split('/')[2]
+  const img = location.state.img
+  // const product = useSelector(state => state.menu.currProduct)
 
-    // const [product, setProduct] = useState(location.state)  
-    const [quantity, setQuantity] = useState(1)
-    const [newQuantity, setNewQuantity] = useState(1)
-    const [color, setColor] = useState(product?.color && product?.color[0])
-    const [size, setSize] = useState(product?.size && product?.size[0])
+  const [product, setProduct] = useState([])
+  const [quantity, setQuantity] = useState(1)
+  const [newQuantity, setNewQuantity] = useState(1)
+  const [color, setColor] = useState(product?.color && product?.color[0])
+  const [size, setSize] = useState(product?.size && product?.size[0])
 
-    const dispatch = useDispatch()
-    
-    const user = useSelector((state) => state.user.currentUser)
-    const cart = useSelector(state => state.cart)
-    const wish = useSelector(state => state.wish)
-   
+  const dispatch = useDispatch()
 
-    // console.log(wish);
-    const [myCart, setMyCart] = useState(cart)
-    const [myWish, setMyWish] = useState(wish)
-    const [mess, setMess] = useState('')
-
-    const [toggle, setToggle] = useState(false)
-    const [preview, setPreview] = useState('close')
-    const [preBtn, setPreBtn] =useState('')
+  const user = useSelector((state) => state.user.currentUser)
+  const cart = useSelector(state => state.cart)
+  const wish = useSelector(state => state.wish)
 
 
-    const [isSubscribed, setIsSubscribed] = useState(true)
+  const currentPhoto = useSelector(state => state.photo.currentPhoto)
+  const thumbNailPhotos = useSelector(state => state.photo.photoThumbNails)
 
-   
-    const handleQuantity = (type) => {
-        if(type === 'sub'){
-           newQuantity > 1 && setNewQuantity(newQuantity-1)
-           quantity > 1 && setQuantity(quantity-1)
-        }else {
-        setNewQuantity(newQuantity+1)
-        setQuantity(quantity+1)
-    }}
+  
+
+  // const [currPhoto, setCurrPhoto] = useState(currentPhoto)
+  // const [currThumb, setCurrThumb] = useState(thumbNailPhotos)
+
+  // console.log(wish);
+  const [myCart, setMyCart] = useState(cart)
+  const [myWish, setMyWish] = useState(wish)
+  const [mess, setMess] = useState('')
+
+  const [toggle, setToggle] = useState(false)
+  const [preview, setPreview] = useState('close')
+  const [preBtn, setPreBtn] = useState('')
 
 
-    const handleAddToCart = async (item, location) => {       
-      setToggle(true)  
-            
-      let match = false
-      let quant = false
-      let loc = ''
-      let i = ''
-      let res = {}
-      if(location === 'Cart'){
-        loc = myCart
-        setPreBtn('cart')
-      }else if(location === 'Wish'){
-        loc = myWish
-        setPreBtn('wishlist')
-      }      
+  const [isSubscribed, setIsSubscribed] = useState(true)
 
-      setPreview('open')  
-      setMess(`Successfully added to ${location}`)
-      loc.products.map((product, index) => { 
-         if(product._id === item._id && product.color === color && product.size === size){           
-            console.log('match')
-            setMess(`Item Already In ${location}`)
-            match= true 
-            i= index           
-          }
-          if(match &&  product.quantity !== quantity){             
-            let newQuant = quantity +  product.quantity
-            setQuantity(newQuant)            
-            quant = true    
-             }  else if(match &&  product.quantity === quantity) {
-               console.log('here');
-               setMess(`Item Already In ${location}`)
-             }   
-            return true
-           }
-          )
-      if (!match){
-        try {            
-           res = await userRequest.put(`/carts/${loc.id}/${user._id}/${location}`, {...product, quantity, color, size})
-        } catch (error) {    
+
+  const handleQuantity = (type) => {
+    if (type === 'sub') {
+      newQuantity > 1 && setNewQuantity(newQuantity - 1)
+      quantity > 1 && setQuantity(quantity - 1)
+    } else {
+      setNewQuantity(newQuantity + 1)
+      setQuantity(quantity + 1)
+    }
+  }
+
+
+  const handleAddToCart = async (item, location) => {
+    setToggle(true)
+
+    let match = false
+    let quant = false
+    let loc = ''
+    let i = ''
+    let res = {}
+    if (location === 'Cart') {
+      loc = myCart
+      setPreBtn('cart')
+    } else if (location === 'Wish') {
+      loc = myWish
+      setPreBtn('wishlist')
+    }
+
+    setPreview('open')
+    setMess(`Successfully added to ${location}`)
+    loc.products.map((product, index) => {
+      if (product._id === item._id && product.color === color && product.size === size) {
+        console.log('match')
+        setMess(`Item Already In ${location}`)
+        match = true
+        i = index
+      }
+      if (match && product.quantity !== quantity) {
+        let newQuant = quantity + product.quantity
+        setQuantity(newQuant)
+        quant = true
+      } else if (match && product.quantity === quantity) {
+        console.log('here');
+        setMess(`Item Already In ${location}`)
+      }
+      return true
+    }
+    )
+    if (!match) {
+      try {
+        res = await userRequest.put(`/carts/${loc.id}/${user._id}/${location}`, { ...product, quantity, color, size })
+      } catch (error) {
       }
     }
-      console.log(quant)
-      if(quant){
-        console.log('add to quaintity');
-        try {     
-          res =  await userRequest.put(`/carts/item/${loc.id}/${user._id}/${i}/${location}/add/${quantity}`, cart)
-         // console.log(res);   
-         } catch (error) {    
-       }
+    console.log(quant)
+    if (quant) {
+      console.log('add to quaintity');
+      try {
+        res = await userRequest.put(`/carts/item/${loc.id}/${user._id}/${i}/${location}/add/${quantity}`, cart)
+        // console.log(res);   
+      } catch (error) {
       }
-      setToggle(false)
-      
-      if (res.data){
-        if(location === 'Cart'){
+    }
+    setToggle(false)
+
+    if (res.data) {
+      if (location === 'Cart') {
         dispatch(syncCart(res.data))
-      }else if(location === 'Wish'){
+      } else if (location === 'Wish') {
         dispatch(syncWish(res.data))
-      }  }
-      
-    
-  }    
-   
-    const handleToggle = () => {
-      console.log('toggle');
-      setPreview('close')
+      }
     }
+  }
 
-    // useEffect(() => {      
-    //     const getMyCart = async () => {      
-    //       try {      
-    //         const res = await userRequest.get('/carts/find/Cart/'+ user._id)
-    //         // console.log(res);
-    //         if (res.data === null & isSubscribed) { setMyCart(cart) 
-    //           }  else {setMyCart(res.data) }         
-            
-    //       } catch (error) {
-            
-    //       }        
-    //       try {      
-    //         const wish = await userRequest.get('/carts/find/Wish/'+ user._id)
-    //         // console.log(res);
-    //         if (wish.data === null) { setMyWish(myWish) 
-    //           }  else {setMyWish(wish.data) }         
-            
-    //       } catch (error) {
-            
-    //       }        
-    //     }
-    //     getMyCart()
-    //     return () => setIsSubscribed(false)
-    //   }, [cart, wish,myWish, user?._id, mess, isSubscribed])
+  const handleToggle = () => {
+    console.log('toggle');
+    setPreview('close')
+  }
 
 
 
-    // useEffect(() => {
-     
-    //     const getProduct = async ()=>{
-            
-    //         try {
-    //             const res = await publicRequest.get("/products/find/" +id)
-    //             if (isSubscribed) {
-    //             setProduct(res.data)
-    //             // console.log(res.data.size);
-    //             setSize(res.data.size[0])
-    //             setColor(res.data.color[0])
-    //             dispatch(setCurrProduct(res.data))
-    //             }
-    //         } catch (error) {
-                
-    //         }
-    //     }
-        
-    //     getProduct()
-    //     return () => setIsSubscribed(false)
-    //   }, [id, isSubscribed])
-      
-      
-      // console.log(process.env.NODE_ENV );
-    //   console.log(product.color && product.color[1]);
-    //   console.log('color ' + color);
-    //   console.log(product.size && product.size[1]);
-    //   console.log('size ' + size);
-      
+  useEffect(() => {
+    const getProduct = async () => {
+      dispatch(setMainPhoto(img))
+      try {
+        const res = await publicRequest.get("/products/find/" + id)
+        if (isSubscribed) {
+          await setProduct(res.data)
+          // console.log(res.data);
+          setSize(res.data.size[0])
+          setColor(res.data.color[0])
+
+          // dispatch(setCurrProduct(res.data))
+
+          // setCurrPhoto(currentPhoto)
+          if (res.data?.morePhotos) {
+            dispatch(setThumbnails(res.data.morePhotos))
+          } else {
+            dispatch(setThumbnails([]))
+          }
+
+        }
+      } catch (error) {
+      }
+    }
+    getProduct()
+    setIsSubscribed(false)
+  }, [dispatch])
+
+
+  // console.log(currentPhoto);
+  // console.log(currPhoto);
+  //   console.log(product.color && product.color[1]);
+  //   console.log('color ' + color);
+  //   console.log(product.size && product.size[1]);
+  //   console.log('size ' + size);
+  {/* <ThumbNailList data={thumbNailPhotos}/> */ }
+
   return (
 
 
-    <Container >   
-      
-      <Wrapper >
-            <ImgContainer color={color} >          
-            <Zoom
-              img={product.img}
-              zoomScale={3}
-              width={400}
-              height={400}
-              transitionTime={0.5}
-            />
+
+    <Container >
+      {!isSubscribed &&
+        <>
+          <Wrapper >
+
+            <ThumbNailList data={thumbNailPhotos} />
+
+            <ImgContainer color={color} >
+              <Image
+                src={currentPhoto}                
+              />
             </ImgContainer>
             <InfoContainer>
-                <Title>{product.title}</Title>
-                <Desc>
+             
+              <Title>{product.title}</Title>
+              <Desc>
                 {product.desc}
-                </Desc>
-                {product.onSale ? <> <SalePrice>$ {product.salePrice}</SalePrice> on sale from <RegPrice>$ {product.price}</RegPrice> </>: <Price>$ {product.price}</Price>}
-                <FilterContainer>
-                    <Filter>
-                        <FilterTitle>Color:</FilterTitle>
-                        {product.color?.map((c, index)=>(
-                            <FilterColor color={c} key={c+ index} onClick={() => setColor(c)} />
-                        ))}                      
-                    </Filter>
-                    <Filter>
-                        <FilterTitle>Size</FilterTitle>
-                        <FilterSize onChange= {(e) => setSize(e.target.value)} >
-                            {product.size?.map((s, index)=>(
-                                <FilterSizeOption key={s +index} >{s}</FilterSizeOption>
-                            ))}                          
-                         </FilterSize>
-                    </Filter>
-                </FilterContainer>
-                <AddContainer>
-                    <AmountContainer>
-                        <Remove onClick={()=> handleQuantity('sub')}/>
-                        <Amount>
-                           {newQuantity}
-                        </Amount>
-                        <Add onClick={()=> handleQuantity('add')}/>
-                    </AmountContainer> 
-                                     
-                    <Button  disabled= {toggle}  onClick={()=>{ setToggle(true);
-                          handleAddToCart(product,'Cart').then(() => setToggle(false))}}>ADD TO CART</Button>
-                    <Button  disabled= {toggle}  onClick={()=>{ setToggle(true);
-                          handleAddToCart(product, 'Wish').then(() => setToggle(false))}}>ADD TO WISH</Button>
-                                      
-                </AddContainer>
-            </InfoContainer>      
-        </Wrapper>     
+              </Desc>
+              {product.onSale ? <> <SalePrice>$ {product.salePrice}</SalePrice> on sale from <RegPrice>$ {product.price}</RegPrice> </> : <Price>$ {product.price}</Price>}
+              <FilterContainer>
+                <Filter>
+                  <FilterTitle>Color:</FilterTitle>
+                  {product.color?.map((c, index) => (
+                    <FilterColor color={c} key={c + index} onClick={() => setColor(c)} />
+                  ))}
+                </Filter>
+                <Filter>
+                  <FilterTitle>Size</FilterTitle>
+                  <FilterSize onChange={(e) => setSize(e.target.value)} >
+                    {product.size?.map((s, index) => (
+                      <FilterSizeOption key={s + index} >{s}</FilterSizeOption>
+                    ))}
+                  </FilterSize>
+                </Filter>
+              </FilterContainer>
+              <AddContainer>
+                <AmountContainer>
+                  <Remove onClick={() => handleQuantity('sub')} />
+                  <Amount>
+                    {newQuantity}
+                  </Amount>
+                  <Add onClick={() => handleQuantity('add')} />
+                </AmountContainer>
+
+                <Button disabled={toggle} onClick={() => {
+                  setToggle(true);
+                  handleAddToCart(product, 'Cart').then(() => setToggle(false))
+                }}>ADD TO CART</Button>
+                <Button disabled={toggle} onClick={() => {
+                  setToggle(true);
+                  handleAddToCart(product, 'Wish').then(() => setToggle(false))
+                }}>ADD TO WISH</Button>
+
+              </AddContainer>
+            </InfoContainer>
+          </Wrapper>
 
 
-        <CartPreviewShade type={preview} onClick={()=> handleToggle('close')}>
-        </CartPreviewShade>
+          <CartPreviewShade type={preview} onClick={() => handleToggle('close')}>
+          </CartPreviewShade>
           <CartPreview type={preview}>
-                <Notification>
-                 <CheckCircleOutlineIcon/>
-                  {mess}
-                </Notification>
-                <PreviewContent>
-                  <PreviewContentDiv>
-                    <PreviewImg src={product.img}/>
-                    <PreDescDiv>
-                      <PreTitle>{product.title}</PreTitle>
-                      <PreDesc>
-                        {product.desc}
-                      </PreDesc>
-                    </PreDescDiv>
-                    <PrePrice>$ {product.price}</PrePrice>
-                  </PreviewContentDiv>
-                  <ToCart onClick={() => {window.location.href=`/${preBtn}`}}>Go To Cart</ToCart>
-                </PreviewContent>
-              </CartPreview>                
-       
+            <Notification>
+              <CheckCircleOutlineIcon />
+              {mess}
+            </Notification>
+            <PreviewContent>
+              <PreviewContentDiv>
+                <PreviewImg src={product.img} />
+                <PreDescDiv>
+                  <PreTitle>{product.title}</PreTitle>
+                  <PreDesc>
+                    {product.desc}
+                  </PreDesc>
+                </PreDescDiv>
+                <PrePrice>$ {product.price}</PrePrice>
+              </PreviewContentDiv>
+              <ToCart onClick={() => { window.location.href = `/${preBtn}` }}>Go To Cart</ToCart>
+            </PreviewContent>
+          </CartPreview>
+        </>
+      }
     </Container>
   )
 }

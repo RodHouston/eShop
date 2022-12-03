@@ -9,6 +9,8 @@ import { publicRequest, userRequest} from '../RequestMethods'
 import { mobile } from "../responsive";
 import { useDispatch, useSelector } from 'react-redux'
 import { syncWish } from '../redux/wishRedux';
+import { setCurrProduct } from '../redux/sideMenuRedux';
+import Zoom from 'react-img-zoom';
 
 
 
@@ -25,10 +27,15 @@ const Wrapper = styled.div`
 `
 
 const ImgContainer = styled.div`
+  display:flex;
+  max-width: 600px;
+  max-height: 80vh;
+  justify-content:center;
+  align-items:center;
   flex: 1;
   border: 2px solid ${props => props.color};
+  z-index:2;
 `
-
 const Image = styled.img`
   width: 100%;
   height: 90vh;
@@ -134,6 +141,7 @@ background-color: rgba(0,0,0,.8);
 // background-color: red;
 top: 0;
 left: 0;
+z-index:2;
 // transform: translate(-50%, 0);
 `
 const CartPreview = styled.div`
@@ -147,6 +155,7 @@ justify-content: center;
 // margin: 0 auto;
 top: 50%;
 left: 50%;
+z-index:2;
 transform: translate(-50%, ${props =>props.type === 'open' ? '0' : '1000px'});
 transition: all ease 1s;
 bottom: 0;
@@ -215,6 +224,7 @@ const WholeSale = () => {
 
     const location = useLocation()
     const id = location.pathname.split('/')[2]
+    const img = location.state.img
 
     const [product, setProduct] = useState([])  
     const [quantity, setQuantity] = useState(1)
@@ -290,7 +300,7 @@ const WholeSale = () => {
       if (!match){
         console.log('in no match');
         try {            
-          res =  await userRequest.put(`/carts/${loc._id}/${user._id}/${location}`, {...product, quantity, color, size})
+          res =  await userRequest.put(`/carts/${loc.id}/${user._id}/${location}`, {...product, quantity, color, size})
             console.log(res);  
         } catch (error) {    
       }
@@ -301,7 +311,7 @@ const WholeSale = () => {
       if(quant){
         console.log('add to quaintity');
         try {     
-           res = await userRequest.put(`/carts/item/${loc._id}/${user._id}/${i}/${location}/add/${quantity}`, cart)
+           res = await userRequest.put(`/carts/item/${loc.id}/${user._id}/${i}/${location}/add/${quantity}`, cart)
           
          } catch (error) {    
        }
@@ -324,31 +334,31 @@ const WholeSale = () => {
 
 
 
-    useEffect(() => {
+    // useEffect(() => {
       
-        const getMyCart = async () => {      
-          try {      
-            const res = await userRequest.get('/carts/find/Cart/'+ user._id)
-            // console.log(res);
-            if (res.data === null & isSubscribed) { setMyCart(cart) 
-              }  else {setMyCart(res.data) }         
+    //     const getMyCart = async () => {      
+    //       try {      
+    //         const res = await userRequest.get('/carts/find/Cart/'+ user._id)
+    //         // console.log(res);
+    //         if (res.data === null & isSubscribed) { setMyCart(cart) 
+    //           }  else {setMyCart(res.data) }         
             
-          } catch (error) {
+    //       } catch (error) {
             
-          }        
-          try {      
-            const wish = await userRequest.get('/carts/find/Wish/'+ user._id)
-            // console.log(res);
-            if (wish.data === null) { setMyWish(myWish) 
-              }  else {setMyWish(wish.data) }         
+    //       }        
+    //       try {      
+    //         const wish = await userRequest.get('/carts/find/Wish/'+ user._id)
+    //         // console.log(res);
+    //         if (wish.data === null) { setMyWish(myWish) 
+    //           }  else {setMyWish(wish.data) }         
             
-          } catch (error) {
+    //       } catch (error) {
             
-          }        
-        }
-        getMyCart()
-        return () => setIsSubscribed(false)
-      }, [cart, wish,myWish, user?._id, mess, isSubscribed])
+    //       }        
+    //     }
+    //     getMyCart()
+    //     return () => setIsSubscribed(false)
+    //   }, [cart, wish,myWish, user?._id, mess, isSubscribed])
 
 
 
@@ -356,20 +366,22 @@ const WholeSale = () => {
      
         const getDesign = async ()=>{
             try {                          
-                const res = await publicRequest.get("/designs/find/" +id)
+                const res = await publicRequest.get("/designs/find/" +id)    
+                dispatch(setCurrProduct(res.data))  
                 if (isSubscribed) {
-                setProduct(res.data)
-                // console.log(res.data.size);
+                await setProduct(res.data)
+                
                 setSize(res.data.size[0])
-                setColor(res.data.color[0])
+                setColor(res.data.color[0])   
+                           
                 }
             } catch (error) {
                 
             }
         }
-        
+        // console.log(product);
         getDesign()
-        return () => setIsSubscribed(false)
+        setIsSubscribed(false)
       }, [id, isSubscribed])
       
     //   console.log();
@@ -385,7 +397,13 @@ const WholeSale = () => {
     
       <Wrapper >
             <ImgContainer color={color} >
-                <Image src={product.img}/>
+            <Zoom
+              img={img}
+              zoomScale={3}
+              width={400}
+              height={400}
+              transitionTime={0.5}
+            />
             </ImgContainer>
             <InfoContainer>
                 <Title>{product.title} #{product.stockNumber}</Title>

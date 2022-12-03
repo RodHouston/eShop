@@ -46,6 +46,7 @@ const Circle = styled.div`
     background-color: white;
     position: absolute;
 `
+
 const Image = styled.img`
     height:75%;
     z-index:2;
@@ -120,8 +121,9 @@ const Product = ({item}) => {
      
     <Container>
         <Circle/>
+      
         <Image src={item.img}/>
-        <Link to={`/product/${item._id}`} state={item}>
+        <Link to={ item.isDesign ? `/wholesale/${item._id}` :`/product/${item._id}`} state={item}>
         <Info>
             <Icon onClick={handleAddToCart}>
                 <ShoppingCartOutlined/>
