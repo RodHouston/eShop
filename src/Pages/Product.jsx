@@ -428,7 +428,7 @@ const Product = () => {
               <Image
                 src={currentPhoto}                
               />
-            </ImgContainer>
+            </ImgContainer> 
             <InfoContainer>
              
               <Title>{product.title}</Title>
