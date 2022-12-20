@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components'
 import { login } from '../redux/apiCalls';
+import { setLocation } from '../redux/sideMenuRedux';
 import {mobile} from "../responsive";
 
 const CryptoJS = require("crypto-js");
@@ -77,7 +79,7 @@ const Login = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const dispatch = useDispatch()
-
+const location = useLocation()
   const {isFetching, error} = useSelector((state) => state.user)
 
   
@@ -88,10 +90,11 @@ const Login = () => {
     setPassword('')
   }
 
+  console.log("here in login");
 
   useEffect(() => {
 
-    // dispatch(loginReset())
+    // dispatch(setLocation(location))
    
   }, []);
 
@@ -101,9 +104,9 @@ const Login = () => {
          <Wrapper>
             <Title>SIGN IN</Title>
             <Form>
-                <Input placeholder="username" onChange={(e)=> setUsername(e.target.value)}/>
-                <Input type='password' placeholder="password" onChange={(e)=> setPassword(e.target.value)}/>
-                <Button onClick={handleLogin} disabled={isFetching}>LOGIN</Button>
+                <Input placeholder="username"  onChange={(e)=> setUsername(e.target.value)}/>
+                <Input type='password' placeholder="password"  onChange={(e)=> setPassword(e.target.value)}/>
+                <Button onClick={handleLogin} disabled={false}>LOGIN</Button>
                 {error && <Error>Something went wrong</Error>}
                 <Link> DO NOT REMEMBER PASSWORD?</Link>
                 <Link>CREATE A NEW ACCOUNT</Link>

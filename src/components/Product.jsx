@@ -11,7 +11,7 @@ const Info = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 3;
+    /* z-index: 3; */
     background-color: rgba(0, 0, 0, 0.2);
     display: flex;
     align-items:center;
@@ -49,7 +49,7 @@ const Circle = styled.div`
 
 const Image = styled.img`
     height:75%;
-    z-index:2;
+    /* z-index:2; */
 `
 
 const Icon = styled.div`
@@ -120,7 +120,7 @@ const Product = ({item}) => {
       <>
      
     <Container>
-        <Circle/>
+        
       
         <Image src={item.img}/>
         <Link to={ item.isDesign ? `/wholesale/${item._id}` :`/product/${item._id}`} state={item}>

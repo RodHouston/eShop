@@ -12,7 +12,7 @@ const MainCategoryDivs = styled.div`
     transition: all ease-in-out .5s;
     width: 100%;
     flex-shrink:0;
-    z-index:5;
+  
     background-color: ${props => props.backgroundColor};
     border-bottom: 2px solid rgba(0,0,0,.2);
 `
@@ -22,7 +22,7 @@ const CategoryDivs = styled.div`
     transition: all ease-in-out .5s; 
     width: 100%;
     flex-shrink:0;
-    z-index:5;
+   
     background-color: rgba(0,0,0,.2);
     border-bottom: 2px solid rgba(0,0,0,.2);
 `
@@ -94,7 +94,7 @@ const SideMenuSubCats = ({subCat, toggle, cat}) => {
                     
     <CategoryDivsExpanded  height={ openSubCats ? "calc(61px*5)" : "0px"} overflow={ openSubCats ? " " : "hidden"} opacity={openSubCats ? 1 : 0} >
                         
-    {Object.values(subCat)[0].map((it, index )=> (  
+    {Object?.values(subCat)[0]?.map((it, index )=> (  
                 <CategoryDivs key={index} height={ openSubCats ? "60px" : "0px"}  >
                     <Link to={`/productlist/${it}`} onClick={closeMenus}  state={gen}>
                     <DivWrappers>

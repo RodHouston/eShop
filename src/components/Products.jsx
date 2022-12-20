@@ -72,14 +72,14 @@ const Products = ({cat, gen, filters, sort}) => {
 //  console.log(gen);
 //  console.log(cat);
 //  console.log(products);
- console.log(filteredProducts.length);
+//  console.log(filteredProducts.length);
   return (
     <Container>
       {cat ? 
         <> 
           {filteredProducts.length > 0 ?
             <>
-              {filteredProducts.map((item, index) => ( 
+              {filteredProducts?.map((item, index) => ( 
                 <Product key={index} item = {item} />  
               ))}            
             </>
@@ -89,8 +89,8 @@ const Products = ({cat, gen, filters, sort}) => {
         </>
       :
         <>        
-          {products.slice(0,8).map((item, index) => (
-            <Product key={index} item = {item} key={index + item._id}/>
+          {products?.slice(0,8).map((item, index) => (
+            <Product  item = {item} key={index + item._id}/>
           ))}
         </>
       }

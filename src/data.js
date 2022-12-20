@@ -22,7 +22,7 @@ export const sliderItems = [{
 ];
 
 export const categories = [{
-    id: 1,
+   _id: 1,
     img: "https://i.pinimg.com/originals/ce/5c/87/ce5c87e0c692c952d820f8d7716fff4e.jpg",
     title: "Graphic Prints!",
     cat: 'graphics',
@@ -33,7 +33,7 @@ export const categories = [{
     }, ],
   },
   {
-    id: 2,
+   _id: 2,
     img: "https://www.carters.com/content/dam/ecomm/ec_creative_carters/2022/cslp%27s/car_q2_2022_cslps/tbkb/CAR_Q2_2022_KB_ShopAll.jpg",
     title: "Boy Clothing",
     cat: 'boys',
@@ -61,7 +61,7 @@ export const categories = [{
     ]
   },
   {
-    id: 3,
+   _id: 3,
     img: "https://oldnavy.gap.com/Asset_Archive/ONWeb/content/0028/755/195/assets/220316_51-M6637_G_DP_NewArrivals.jpg",
     title: "Girl Clothing",
     cat: 'girls',
@@ -89,7 +89,7 @@ export const categories = [{
     ]
   },
   {
-    id: 4,
+   _id: 4,
     img: "https://images.pexels.com/photos/2983464/pexels-photo-2983464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
     title: "Women Clothing",
     cat: 'ladies',
@@ -117,7 +117,7 @@ export const categories = [{
     ]
   },
   {
-    id: 5,
+   _id: 5,
     img: "https://media.pendleton-usa.com/image/list/$i_!sfcc-is-main:True!/fn_edge:join/f_auto,q_auto,dpr_3.0/w_400,c_scale/50000-PBB?_s=RAABAB0",
     title: "Men Clothing",
     cat: 'men',

@@ -13,7 +13,7 @@ const MainCategoryDivs = styled.div`
     height: 60px;    
     width: 100%;
     flex-shrink:0;
-    z-index:5;
+    
     background-color: ${props => props.backgroundColor};
     border-bottom: 2px solid rgba(0,0,0,.2);
 `
@@ -79,7 +79,7 @@ const SideMenuCats = ({item, setOpen}) => {
 
            
            <CategoryDivsExpanded height={ toggle ? "calc(100%*3)" : "0px"} overflow={ toggle ? " " : "hidden"} opacity={toggle ? 1 : 0} >
-                { item?.subCats.map((it, index )=> (  
+                { item?.subCats?.map((it, index )=> (  
                                    
                         <SideMenuSubCats key={index} cat={item} subCat={it} toggle={toggle}/>   
                     

@@ -5,8 +5,10 @@ const photoSlice = createSlice({
     initialState: {
        currentPhoto: null,
        photoThumbNails: [],
+       dotIndex:0,
        isFetching: false,
-       error: false
+       error: false, 
+       galleries:[]
     },
     reducers:{
         setMainPhoto:(state, action)=>{
@@ -14,9 +16,15 @@ const photoSlice = createSlice({
         },
         setThumbnails:(state, action)=>{
             state.photoThumbNails=action.payload;
-        }      
+        },
+        setGalleries:(state, action) => {
+            state.galleries= action.payload
+        },   
+        setDotIndex:(state, action) => {
+            state.dotIndex= action.payload
+        }
     }
 })
 
-export const { setMainPhoto, setThumbnails} = photoSlice.actions;
+export const { setMainPhoto, setThumbnails, setGalleries, setDotIndex} = photoSlice.actions;
 export default photoSlice.reducer;

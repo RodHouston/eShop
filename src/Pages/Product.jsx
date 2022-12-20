@@ -12,7 +12,8 @@ import { syncWish } from '../redux/wishRedux';
 import { setCurrProduct } from '../redux/sideMenuRedux';
 import Zoom from 'react-img-zoom'
 import { ThumbNailList } from '../components/ThumbnailList';
-import { setMainPhoto, setThumbnails } from '../redux/photoRedux';
+import { setDotIndex, setMainPhoto, setThumbnails } from '../redux/photoRedux';
+import StarIcon from '../utilities/StarIcon';
 
 
 
@@ -37,7 +38,7 @@ const ImgContainer = styled.div`
   align-items:center;
   flex: 1;
   border: 2px solid ${props => props.color};
-  z-index:2;
+
 `
 
 const Image = styled.img`
@@ -239,7 +240,6 @@ const ToCart = styled.button`
 
 
 const ThumbnailDiv = styled.div`
-
 display:flex;
 `
 const ThumbnailList = styled.ul`
@@ -253,6 +253,47 @@ margin: 8px;
 const Thumbnail = styled.img`
     width: 50px;
     box-shadow: 2px 2px 8px rgba(0,0,0,.5);
+`
+const DotDiv = styled.div`
+    display: flex;
+    align-items:center;
+    justify-content:center;
+  /* background-color: red; */
+    /* position:absolute; */
+    top: 5vh;
+    left:0;
+    right:0;
+    padding-bottom:10px;    
+    `
+
+const Dots = styled.div`
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  border: 2px solid darkgray;
+  cursor: pointer;
+  margin: 10px 7px 0px;  
+  background-color: ${props => props.bgColor};
+
+  `
+
+const RatingsDiv = styled.div`
+  display:flex;
+  flex-direction:row;
+  `
+const Stars = styled.div`
+  margin-right: 10px;
+  `
+const RatingInput = styled.input`
+    position: absolute;
+    left: -100vw;
+`
+const RatingLabel = styled.label`
+    width: 48px;
+    height: 48px;
+    padding: 48px 0 0;
+    overflow: hidden;
+    background: url('../../Photos/stars.svg') no-repeat top left;
 `
 
 const Product = () => {
@@ -274,16 +315,12 @@ const Product = () => {
   const cart = useSelector(state => state.cart)
   const wish = useSelector(state => state.wish)
 
-
   const currentPhoto = useSelector(state => state.photo.currentPhoto)
-  const thumbNailPhotos = useSelector(state => state.photo.photoThumbNails)
+  const dotInde = useSelector(state => state.photo.dotIndex)
+  const [dotIndex, setDotInde] = useState(0)
 
-  
+  const [thumbNailPhotos, setThumbNailPhotos] = useState([])
 
-  // const [currPhoto, setCurrPhoto] = useState(currentPhoto)
-  // const [currThumb, setCurrThumb] = useState(thumbNailPhotos)
-
-  // console.log(wish);
   const [myCart, setMyCart] = useState(cart)
   const [myWish, setMyWish] = useState(wish)
   const [mess, setMess] = useState('')
@@ -292,8 +329,50 @@ const Product = () => {
   const [preview, setPreview] = useState('close')
   const [preBtn, setPreBtn] = useState('')
 
-
   const [isSubscribed, setIsSubscribed] = useState(true)
+
+  const minSwipeDistance = 50
+  const [touchEnd, setTouchEnd] = useState(null)
+
+  const [touchStart, setTouchStart] = useState(null)
+
+  const [ratings, setRatings] = useState(['', '', '', '', ''])
+  const [stars, setStars] = useState(0)
+  const [ratingTotal, setRatingTotal] = useState(0)
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null) // otherwise the swipe is fired even with usual touch events
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX)
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+    console.log('swipe', isLeftSwipe ? 'left' : 'right')
+    if (isRightSwipe) {
+      const idx = dotIndex > 0 ? dotIndex - 1 : thumbNailPhotos.length - 1
+      dispatch(setDotIndex(idx))
+      setDotInde(idx)
+      dispatch(setDotIndex(idx))
+      dispatch(setMainPhoto(thumbNailPhotos[idx]))
+    }
+    if (isLeftSwipe) {
+      const idx = dotIndex < thumbNailPhotos.length - 1 ? dotIndex + 1 : 0
+      dispatch(setDotIndex(idx))
+      setDotInde(idx)
+      dispatch(setDotIndex(idx))
+      dispatch(setMainPhoto(thumbNailPhotos[idx]))
+    }
+  }
+  const handleDotTouch = (idx) => {
+    dispatch(setDotIndex(idx))
+    setDotInde(idx)
+    dispatch(setDotIndex(idx))
+    dispatch(setMainPhoto(thumbNailPhotos[idx]))
+  }
 
 
   const handleQuantity = (type) => {
@@ -306,14 +385,12 @@ const Product = () => {
     }
   }
 
-
   const handleAddToCart = async (item, location) => {
     setToggle(true)
-
     let match = false
     let quant = false
     let loc = ''
-    let i = ''
+    let idx = ''
     let res = {}
     if (location === 'Cart') {
       loc = myCart
@@ -330,7 +407,7 @@ const Product = () => {
         console.log('match')
         setMess(`Item Already In ${location}`)
         match = true
-        i = index
+        idx = index
       }
       if (match && product.quantity !== quantity) {
         let newQuant = quantity + product.quantity
@@ -353,7 +430,7 @@ const Product = () => {
     if (quant) {
       console.log('add to quaintity');
       try {
-        res = await userRequest.put(`/carts/item/${loc.id}/${user._id}/${i}/${location}/add/${quantity}`, cart)
+        res = await userRequest.put(`/carts/item/${loc.id}/${user._id}/${idx}/${location}/add/${quantity}`, cart)
         // console.log(res);   
       } catch (error) {
       }
@@ -370,7 +447,6 @@ const Product = () => {
   }
 
   const handleToggle = () => {
-    console.log('toggle');
     setPreview('close')
   }
 
@@ -379,59 +455,85 @@ const Product = () => {
   useEffect(() => {
     const getProduct = async () => {
       dispatch(setMainPhoto(img))
+      let ratingSum = 0;
+      let rateTotal =0;
       try {
+        
         const res = await publicRequest.get("/products/find/" + id)
+        
         if (isSubscribed) {
-          await setProduct(res.data)
-          // console.log(res.data);
+          
+          res.data?.ratings?.map((rating) => {
+           
+            rateTotal++          
+              ratingSum += rating.rating
+           
+          })
+          const ratingValue = ratingSum/rateTotal   
+          setRatingTotal(rateTotal)       
+          setStars(ratingValue)
+          console.log('here');
+          console.log(ratingValue);
+          setProduct(res.data)
           setSize(res.data.size[0])
           setColor(res.data.color[0])
-
-          // dispatch(setCurrProduct(res.data))
-
-          // setCurrPhoto(currentPhoto)
           if (res.data?.morePhotos) {
+            setThumbNailPhotos([res.data.img, ...res.data.morePhotos])
             dispatch(setThumbnails(res.data.morePhotos))
           } else {
             dispatch(setThumbnails([]))
           }
-
         }
       } catch (error) {
       }
     }
     getProduct()
     setIsSubscribed(false)
-  }, [dispatch])
+  }, [dispatch, id, img, isSubscribed])
 
-
-  // console.log(currentPhoto);
-  // console.log(currPhoto);
-  //   console.log(product.color && product.color[1]);
-  //   console.log('color ' + color);
-  //   console.log(product.size && product.size[1]);
-  //   console.log('size ' + size);
-  {/* <ThumbNailList data={thumbNailPhotos}/> */ }
-
+  
   return (
-
-
 
     <Container >
       {!isSubscribed &&
         <>
           <Wrapper >
-
-            <ThumbNailList data={thumbNailPhotos} />
-
-            <ImgContainer color={color} >
+            <ImgContainer color={color} onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}>
               <Image
-                src={currentPhoto}                
+                src={currentPhoto}
               />
-            </ImgContainer> 
+            </ImgContainer >
+            <ThumbNailList data={thumbNailPhotos} dotIndex={dotIndex} />
+            <DotDiv>
+              {thumbNailPhotos.map((_, idx) => (
+                <Dots
+                  key={idx}
+                  bgColor={dotIndex === idx ? "teal" : "#c4c4c4"}
+                  onClick={() => {
+                    handleDotTouch(idx);
+                  }}
+                ></Dots>
+              ))}
+            </DotDiv>
             <InfoContainer>
-             
               <Title>{product.title}</Title>
+              <RatingsDiv>
+                {ratings?.map((star, idx) => (
+                  idx+1 < stars ?                
+                  <Stars key={idx}>
+                    <StarIcon data="blue"  />
+                  </Stars>                  
+                  : 
+                  <Stars key={idx}>
+                    <StarIcon data="white" />
+                  </Stars>
+                  
+                ))}
+                ({ratingTotal} customer reviews)
+
+              </RatingsDiv>
               <Desc>
                 {product.desc}
               </Desc>
@@ -469,11 +571,10 @@ const Product = () => {
                   setToggle(true);
                   handleAddToCart(product, 'Wish').then(() => setToggle(false))
                 }}>ADD TO WISH</Button>
-
               </AddContainer>
+
             </InfoContainer>
           </Wrapper>
-
 
           <CartPreviewShade type={preview} onClick={() => handleToggle('close')}>
           </CartPreviewShade>
@@ -487,6 +588,7 @@ const Product = () => {
                 <PreviewImg src={product.img} />
                 <PreDescDiv>
                   <PreTitle>{product.title}</PreTitle>
+
                   <PreDesc>
                     {product.desc}
                   </PreDesc>

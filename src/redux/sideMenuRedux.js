@@ -8,7 +8,8 @@ const menuSlice = createSlice({
         category:false,       
         subCat:false, 
         currProduct:{},
-        dropDownMenu:false      
+        dropDownMenu:false ,
+        currLocation: ''   
     },
     reducers:{
         openMainMenu:(state)=>{
@@ -40,9 +41,13 @@ const menuSlice = createSlice({
         closeDropDownMenu:(state, action)=>{
             // console.log(action.payload.products);   
             state.dropDownMenu = action.payload;     
-        },
+        }, 
+        setLocation:(state, action)=> {
+            state.currLocation = action.payload
+        }
     }
 })
 
-export const { openCats, openMainMenu, openSubCat, closeMenu, setCurrProduct, clearCurrProduct, openDropDownMenu, closeDropDownMenu } = menuSlice.actions;
+export const { openCats, openMainMenu, openSubCat, closeMenu, setCurrProduct,
+     clearCurrProduct, openDropDownMenu, closeDropDownMenu, setLocation} = menuSlice.actions;
 export default menuSlice.reducer;

@@ -52,8 +52,8 @@ const ProductList2 = (cats) => {
     const gen = location.state
     
     
-console.log(gen);
-console.log(cat);
+// console.log(gen);
+// console.log(cat);
     const handleFilters = (e) => {
         let value = e.target.value;
         let name = e.target.name;

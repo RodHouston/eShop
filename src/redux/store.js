@@ -4,6 +4,7 @@ import userReducer from "./userRedux"
 import wishReducer from './wishRedux'
 import menuReducer from "./sideMenuRedux";
 import photoReducer from "./photoRedux";
+import globalReducer from "./globalRedux"
 
 import {
     persistStore,
@@ -29,7 +30,8 @@ import {
       cart: cartReducer, 
       wish: wishReducer, 
       menu: menuReducer,
-      photo: photoReducer
+      photo: photoReducer,
+      global: globalReducer,
     });
   
   const persistedReducer = persistReducer(persistConfig, rootReducer);

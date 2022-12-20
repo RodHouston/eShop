@@ -15,14 +15,16 @@ import { categories } from '../data';
 import Announcement2 from './Announcement2';
 import DropdownMenu from './DropdownMenu';
 import { openDropDownMenu } from '../redux/sideMenuRedux';
+import NavMobile from './NavMobile';
 
 
 
 const Container = styled.div`   
-    position: sticky;
+    position: relative;
     top:0;
+    width:100vw;
     /* height: 60px; */
-    z-index:4;
+    /* z-index:2; */
     background-color: white;
     ${mobile({ height: '125px' })}
 `
@@ -56,7 +58,7 @@ const SearchDiv = styled.div`
     top: 30px;
     left:0;
     background-color: rgba(0,0,0,.8);
-    z-index: 3;
+  
     scrollbar-width: none;
     overflow-y: auto;
     &::-webkit-scrollbar {
@@ -377,13 +379,8 @@ const Navbar = () => {
                         ))}
                     </NavUL>
                     <DropdownMenu cat={cata} />
-                </CatNavDiv>
-                {location.state != "graphics" && 
-                <Announcement2 />
-                }
-                
+                </CatNavDiv>       
             </Container>
-
         </>
     )
 }

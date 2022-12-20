@@ -75,11 +75,11 @@ const ProductList2 = () => {
     const location = useLocation()
     const cat = location.pathname.split('/')[2].replaceAll('%20', ' ')
     const gen = cat === 'graphics' ? 'all' : cat;
-    const data = categories.find(item=> item.cat.includes(cat))
-    const sub = data.subCats
+    const data = categories.find(item=> item?.cat?.includes(cat))
+    const sub = data?.subCats
     
-console.log(gen);
-console.log(sub);
+// console.log(gen);
+// console.log(sub);
     const handleFilters = (e) => {
         let value = e.target.value;
         let name = e.target.name;
@@ -139,13 +139,13 @@ console.log(sub);
         </FilterContainer>
         <ContentContainer>
             <SideBarDiv>
-                {sub.map((cats, index) => (
-                    <>
-                    <CatTitle>{Object.values(cats)[1]}</CatTitle>
+                {sub?.map((cats, index) => (
+                    <div key={index}>
+                    <CatTitle >{Object.values(cats)[1]}</CatTitle>
                     <Cat>{Object.values(cats)[0].map((cat, index) => (
-                       <p>{cat}</p> 
+                       <p key={index}>{cat}</p> 
                     ))}</Cat>
-                    </>
+                    </div>
                 ))}
             </SideBarDiv>
             <ProductDiv>

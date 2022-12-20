@@ -97,11 +97,11 @@ const DropdownMenu = ({ cat }) => {
             <SubDiv height={toggle ? '160px' : ' 0px'}
                 opacity={toggle ? '1' : ' 0'} >
                 {
-                    cat.subCats?.map((sub, index) => (
+                    cat?.subCats?.map((sub, index) => (
                         <SubCatsDiv key={index}  >
                             <SubTitles>{sub.subTitle}</SubTitles>
                             <LinkDiv >
-                                {Object.values(sub)[0].map((it, index) => (
+                                {Object?.values(sub)[0]?.map((it, index) => (
                                     <Link key={index} to={`/productlist/${it}`}
                                         onClick={(e) => { dispatch(openDropDownMenu(!toggle)) }}
                                         state={cat.cat}>

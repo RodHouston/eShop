@@ -54,8 +54,8 @@ useEffect(() => {
  }, [sort])
   return (
     <Container>
-        {cat ? filteredDesigns.map((item, index) => (
-            <WholeSale item = {item} key={item._id + index}/>)) : designs.slice(0,8).map((item, index) => (
+        {cat ? filteredDesigns?.map((item, index) => (
+            <WholeSale item = {item} key={item._id + index}/>)) : designs?.slice(0,8).map((item, index) => (
               <WholeSale item = {item} key={index + item._id}/>))
             }
     </Container>

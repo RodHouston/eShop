@@ -1,0 +1,7 @@
+{
+  "name": "classyandsassy",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}

@@ -5,10 +5,14 @@ import Newletter from '../components/Newletter'
 import Products from '../components/Products'
 //import { mobile } from "../responsive";
 import Slider from '../components/Slider'
+import SliderMobile from '../components/SliderMobile'
 import { syncCart } from '../redux/cartRedux'
 import { clearCurrProduct, closeDropDownMenu, openDropDownMenu } from '../redux/sideMenuRedux'
 import { syncWish } from '../redux/wishRedux'
 import { userRequest } from '../RequestMethods'
+import { sliderItems } from '../data'
+import GallerySliderMobile from '../components/GallerySliderMobile'
+import Article from '../components/Article'
 
 const Home = () => {
   const user = useSelector((state) => state.user.currentUser)
@@ -50,7 +54,6 @@ const Home = () => {
   }   
 }
 } 
-
   dispatch(closeDropDownMenu(false))
   getMyCart()
 }, [user, user?._id, dispatch])
@@ -99,7 +102,10 @@ const Home = () => {
 
   return (
     <div>       
-        <Slider/>
+      <SliderMobile sliderItemsIn={sliderItems}/> 
+        <Slider sliderItemsIn={sliderItems} />
+        <GallerySliderMobile/>
+        <Article/>
         <Categories/>
         <Products/>
         <Newletter/>       
