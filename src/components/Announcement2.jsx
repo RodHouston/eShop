@@ -4,9 +4,9 @@ import { useRef, useState, useEffect } from "react"
 
 
 const Container = styled.div`
+    display:flex;
     height: 30px;
     background-color: teal;
-    display:flex;
     color: white;
     align-items: center; 
     justify-content: center;
@@ -15,9 +15,12 @@ const Container = styled.div`
     border-bottom: 4px solid white;
     box-shadow: 0 5px 8px rgba(0,0,0,.3);    
     width:100vw;
+    overflow:hidden;
 `
 const Ad = styled.div`
     display:flex;
+    width:100%;
+    height:100%;
     flex-direction:row;     
     align-items: center; 
     justify-content: center;
@@ -25,38 +28,36 @@ const Ad = styled.div`
     margin:0 auto;
 `
 
-const MapContainer = styled.div`     
+const Title = styled.div`    
     display:flex;
-    height:30px;
-    width:200px;   
-    position:relative;
-    align-items: center; 
-    justify-content: center;
-`
-const Title = styled.div`   
-    display:flex;
-    opacity: ${(props) => props.visible};
-    /* height:${(props) => props.slide};   */
-    /* transform: translateX(${(props) => props.slide});   */
+    flex-direction:row;  
+    opacity: ${(props) => props.visible};  
     transform: rotateX(${(props) => props.slide});
      position:absolute;
      align-items: center; 
     justify-content: center;     
-    transition: all 1s ease-in-out; 
-     /* position:absolute;
-    overflow:hidden; 
-    white-space:nowrap;
-    background-color:black; */
+    transition: all 1s ease-in-out;     
 `
 const LinkContainer = styled.div`
-display:flex;
+    display: flex;
+    transform: rotateX(${(props) => props.rotate});
+    transition: all 1s ease-in-out; 
+    flex-direction:row;
+    width:100%;
+    height:30px;
+    justify-content:center;
+    align-items:center;
+    position:absolute;
+    /* background-color:${(props) => props.color}; */
+    margin: 0 auto;
+    overflow:hidden;
 `
 const LinkToDesigns = styled.p`
-    /* text-decoration:underline;  
+    text-decoration:underline;  
     margin-left:5px;
-    cursor: pointer;       */
-    /* transform: translateX(${(props) => props.slide});
-    transition: all 2.5s ease-in-out; */
+    cursor: pointer;       
+    transform: translateX(${(props) => props.slide});
+    transition: all 2.5s ease-in-out;
     
     &:hover{
         transform: scale(1.1);        
@@ -68,15 +69,18 @@ const Announcement2 = () => {
   const deals = [
     {
       ad: "Custom Prints Available!!! ",
-      link: `/productlist2/graphics`
+      link: `/productlist2/graphics`,
+      color:'IndianRed'
     },
     {
       ad: "BIG SALE on Boy's Clothing!!! ",
-      link: `/productlist2/boys`
+      link: `/productlist2/boys`,
+      color:'teal'
     },
     {
       ad: "New Leggings Available!!! ",
-      link: `/productlist2/ladies`
+      link: `/productlist2/ladies`,
+      color:'Coral'
     }
   ]
 
@@ -97,43 +101,49 @@ const Announcement2 = () => {
   }
 
 
-  // useEffect(() => {
-  //   resetTimeout();
-  //   setIfSkip(false)
-  //   if (counter <= 17) {
-  //     setCounter(counter + 1)
-  //     timeoutRef.current = setTimeout(
-  //       () =>
-  //         setSlideIndex(slideIndex < sliderItems.length - 1 ? slideIndex + 1 : 0),
-  //       delay
-  //     );
-  //     // console.log(slideIndex);
-  //     return () => {
+  useEffect(() => {
+    resetTimeout();
+    setIfSkip(false)
+    if (counter <= 50) {
+      setCounter(counter + 1)
+      timeoutRef.current = setTimeout(
+        () =>
+          setSlideIndex(slideIndex < sliderItems.length - 1 ? slideIndex + 1 : 0),
+        delay
+      );
+      // console.log(slideIndex);
+      return () => {
 
-  //       resetTimeout();
-  //     };
-  //   }
-  // }, [slideIndex]);
+        resetTimeout();
+      };
+    }
+  }, [slideIndex]);
 
-//   <LinkContainer>
-//   <Link to={sliderItems[slideIndex]}>
-//     <LinkToDesigns>Click To See</LinkToDesigns>
-//   </Link>
-// </LinkContainer>
+  //   <LinkContainer>
+  //   <Link to={sliderItems[slideIndex]}>
+  //     <LinkToDesigns>Click To See</LinkToDesigns>
+  //   </Link>
+  // </LinkContainer>
 
   return (
     <Container>
-      <Ad>        
-          {sliderItems.map((deal, idx) => (
-            <div key={idx}>            
-              <Title  visible={slideIndex === idx ? "1" : "0"} slide={slideIndex == idx ? "0" : "180deg"}>
+      <Ad>
+        {sliderItems.map((deal, idx) => (
+          <LinkContainer rotate={slideIndex === idx ? "0" : "90deg"} key={idx} color={deal.color}>
+            <Title visible={slideIndex === idx ? "1" : "0"} slide={slideIndex == idx ? "0" : "180deg"}>
               <Link to={sliderItems[idx].link}>
-                {deal.ad}
-                </Link>
-              </Title>             
-            </div>
-          ))}         
-      </Ad>
+                {deal.ad}                
+              </Link>
+              <Link to={sliderItems[idx].link}>                
+                <LinkToDesigns slide={slideIndex == idx ? "0" : "180px"}>Click To See</LinkToDesigns>
+              </Link>
+            </Title>
+            
+          </LinkContainer>
+        ))}
+        </Ad>
+        
+      
     </Container>
   )
 }

@@ -16,6 +16,7 @@ const DropDownDiv = styled.div`
     transition:all ease-in-out .5s;
     border-bottom: 2px solid teal;
     /* opacity: ${props => props.opacity}; */
+    z-index:9;
 `
 const SubDiv = styled.div`
     display:flex;
@@ -81,8 +82,7 @@ const DropdownMenu = ({ cat }) => {
     // console.log(cat);
     return (
 
-        <DropDownDiv
-            onMouseLeave={(e) => { dispatch(closeDropDownMenu(false)) }}
+        <DropDownDiv            
             height={toggle ? '200px' : ' 0px'} >
             <MenuTitleDiv >
 
@@ -95,7 +95,8 @@ const DropdownMenu = ({ cat }) => {
                 </Link>
             </MenuTitleDiv>
             <SubDiv height={toggle ? '160px' : ' 0px'}
-                opacity={toggle ? '1' : ' 0'} >
+                opacity={toggle ? '1' : ' 0'} 
+                onClick={(e) => { dispatch(openDropDownMenu(!toggle)) }}>
                 {
                     cat?.subCats?.map((sub, index) => (
                         <SubCatsDiv key={index}  >

@@ -25,8 +25,7 @@ const Categories = () => {
   if (categories1.length === 0) {
     dispatch(setCategories(categories))
   }
-  console.log(cats);
-  console.log(categories1);
+
   return (
     <Container>
       {categories1?.map((item, index) => (

@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components'
 import { login } from '../redux/apiCalls';
 import { setLocation } from '../redux/sideMenuRedux';
-import {mobile} from "../responsive";
+import { mobile } from "../responsive";
 
 const CryptoJS = require("crypto-js");
 
@@ -79,39 +79,38 @@ const Login = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const dispatch = useDispatch()
-const location = useLocation()
-  const {isFetching, error} = useSelector((state) => state.user)
-
-  
+  const location = useLocation()
+  const { isFetching, error } = useSelector((state) => state.user)
 
   const handleLogin = (e) => {
-    e.preventDefault()  
-    login(dispatch, {username, password})
+    e.preventDefault()
+    login(dispatch, { username, password })
     setPassword('')
   }
-
-  console.log("here in login");
-
+  
   useEffect(() => {
 
     // dispatch(setLocation(location))
-   
+
   }, []);
 
 
   return (
     <Container>
-         <Wrapper>
-            <Title>SIGN IN</Title>
-            <Form>
-                <Input placeholder="username"  onChange={(e)=> setUsername(e.target.value)}/>
-                <Input type='password' placeholder="password"  onChange={(e)=> setPassword(e.target.value)}/>
-                <Button onClick={handleLogin} disabled={false}>LOGIN</Button>
-                {error && <Error>Something went wrong</Error>}
-                <Link> DO NOT REMEMBER PASSWORD?</Link>
-                <Link>CREATE A NEW ACCOUNT</Link>
-            </Form>
-       </Wrapper>
+      <Wrapper>
+        <Title>SIGN IN</Title>
+        <Form>
+          <Input placeholder="username" onChange={(e) => setUsername(e.target.value)} />
+          <Input type='password' placeholder="password" onChange={(e) => setPassword(CryptoJS.AES.encrypt(
+      e.target.value,
+      process.env.REACT_APP_PASS_SEC
+    ).toString())} />
+          <Button onClick={handleLogin} disabled={false}>LOGIN</Button>
+          {error && <Error>Something went wrong</Error>}
+          <Link> DO NOT REMEMBER PASSWORD?</Link>
+          <Link>CREATE A NEW ACCOUNT</Link>
+        </Form>
+      </Wrapper>
 
     </Container>
   )

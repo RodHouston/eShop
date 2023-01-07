@@ -1,15 +1,5 @@
 import { createSlice  } from "@reduxjs/toolkit";
 
-
-
-
-
-
-      
-        // console.log(res);
-    
-
-
 const cartSlice = createSlice({
     name: "cart",
     initialState: {
@@ -20,11 +10,11 @@ const cartSlice = createSlice({
     },
     reducers:{
         syncCart:(state, action)=>{
-            // console.log(action.payload.products);   
-            state.id = action.payload._id;        
-            state.quantity = action.payload.products.length;
-            state.products = action.payload.products
-            state.total = action.payload.amount;
+            // console.log(action.payload);   
+            state.id = action.payload?._id;        
+            state.quantity = action?.payload?.products.length;
+            state.products = action?.payload?.products
+            state.total = action?.payload?.amount;
         },
         addProduct:(state, action)=>{
             state.quantity +=1;

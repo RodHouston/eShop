@@ -1,43 +1,41 @@
-
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Cart from "./Pages/Cart";
-import Wishlist from "./Pages/Wishlist";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
-import Product from "./Pages/Product";
-import WholeSaleList from "./Pages/WholeSaleList";
-import Register from "./Pages/Register";
-import Pay from "./components/Pay";
 import Success from "./Pages/Success";
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
-
-import { useDispatch, useSelector } from "react-redux";
-import ScrollToTop from "./components/ScrollToTop";
+import Product from "./Pages/Product";
+import Wishlist from "./Pages/Wishlist";
+import Register from "./Pages/Register";
 import WholeSale from "./Pages/WholeSale";
-import { syncCart } from "./redux/cartRedux";
-import { publicRequest, userRequest } from "./RequestMethods";
-import { useEffect, useState } from "react";
-import { syncWish } from "./redux/wishRedux";
-import SideMenu from "./components/SideMenu";
-import Navbar from "./components/Navbar";
-import Announcement from "./components/Announcement";
 import PhotoGallery from "./Pages/PhotoGallery";
-
-import Footer from "./components/Footer";
 import ProductList2 from "./Pages/ProductList2";
-import { setGalleries } from "./redux/photoRedux";
-import Announcement2 from "./components/Announcement2";
+import WholeSaleList from "./Pages/WholeSaleList";
+import Pay from "./components/Pay";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import SideMenu from "./components/SideMenu";
 import NavMobile from "./components/NavMobile";
-import { setCategories } from "./redux/globalRedux";
+import ScrollToTop from "./components/ScrollToTop";
+import Announcement from "./components/Announcement";
+import Announcement2 from "./components/Announcement2";
 import { categories } from "./data";
-
+import { syncCart } from "./redux/cartRedux";
+import { syncWish } from "./redux/wishRedux";
+import { setGalleries } from "./redux/photoRedux";
+import { setCategories } from "./redux/globalRedux";
+import { publicRequest, userRequest } from "./RequestMethods";
 
 
 const App = () => {
 
-
-  const user = useSelector((state) => state.user.currentUser)
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.user.currentUser)
+  const tempUser = useSelector((state) => state.user.tempUser)
   const [isDesktop, setDesktop] = useState(window.innerWidth > 735)
+
+  // console.log(user);
   const updateMedia = () => {
     setDesktop(window.innerWidth > 735);
   };
@@ -49,98 +47,95 @@ const App = () => {
 
   useEffect(() => {
     const getGlobalData = async () => {
-      const res = await publicRequest.get("/photoGallery")
-      const res2 = await publicRequest.get("/productCategories")
 
-      const cats = [...categories, ...res2.data]
-      dispatch(setCategories(cats))
-      dispatch(setGalleries(res.data))
+      try {
+        const res = await publicRequest.get("/photoGallery")
+        dispatch(setGalleries(res.data))
+
+        const res2 = await publicRequest.get("/productCategories")
+        const cats = [...categories, ...res2.data]
+        dispatch(setCategories(cats))
+
+        const cart = await userRequest.get('/carts/find/Cart/' + user?._id)
+        // console.log("in useEffect getting cart");
+        // console.log(cart.data);
+        dispatch(syncCart(cart.data))
+
+      } catch (err) {
+        console.log(err);
+      }
+
     }
     getGlobalData()
-  }, [])
+  }, [user])
 
-  useEffect(() => {
-    const getCategories = async () => {
+  // useEffect(() => {
+  //   const getMyCart = async () => {
+  //     console.log('app')
+  //     if (user != null) {
+  //       //IF USER LOGGED IN CHECK FOR THEIR CART
+  //       try {
+  //         const res = await userRequest.get('/carts/find/Cart/' + user._id)
+  //         console.log("HERE WE GO");
+  //         if (res.data === null) {
+  //           try {
+  //             //IF USER DOES NOT HAVE A CART, CREATE ONE
+  //             await userRequest.post('/carts/Cart',
+  //               {
+  //                 "userId": user._id,
+  //                 "products": [],
+  //                 "amount": 0,
+  //                 "address": "123 Test Ave, Tester, Va. 22153"
+  //               })
+  //           } catch (error) {
+  //             console.log(error);
+  //           }
+  //         } else {
+  //           //IF USER DOES HAVE A CART, DISPATCH IT  
+  //           dispatch(syncCart(res.data))
+  //         }
 
-    }
-    getCategories()
-  }, [])
+  //       } catch (error) {
+  //         console.log('notworking');
+  //         console.log(error);
+  //       }
+  //     }
+  //   }
+  //   getMyCart()
+  // }, [user, user?._id, dispatch])
 
+  // useEffect(() => {
+  //   const getMyWish = async () => {
+  //     if (user != null) {
+  //       //IF USER LOGGED IN CHECK FOR THEIR WISH LIST
+  //       try {
+  //         let wish = await userRequest.get('/carts/find/Wish/' + user._id)
+  //         if (wish.data === null) {
+  //           //IF USER DOES NOT HAVE A WISH LIST, CREATE ONE
+  //           try {
+  //             wish = await userRequest.post('/carts/Wish',
+  //               {
+  //                 "userId": user._id,
+  //                 "products": [],
+  //                 "amount": 0
+  //               })
+  //           } catch (error) {
+  //             console.log(error);
+  //           }
+  //         } else {
+  //           //IF USER DOES HAVE A WISH LIST, DISPATCH IT           
+  //           dispatch(syncWish(wish.data))
+  //         }
+  //       } catch (error) {
+  //         console.log('notworking');
+  //       }
+  //     }
+  //   }
+  //   getMyWish()
+  // }, [user, user?._id, dispatch])
 
-
-
-  useEffect(() => {
-    const getMyCart = async () => {
-
-      if (user != null) {
-        //IF USER LOGGED IN CHECK FOR THEIR WISH LIST
-        try {
-          const res = await userRequest.get('/carts/find/Cart/' + user._id)
-          console.log("HERE WE GO");
-          if (res.data === null) {
-            try {
-              //IF USER DOES NOT HAVE A CART, CREATE ONE
-              await userRequest.post('/carts/Cart',
-                {
-                  "userId": user._id,
-                  "products": [],
-                  "amount": 0,
-                  "address": "123 Test Ave, Tester, Va. 22153"
-                })
-            } catch (error) {
-              console.log(error);
-            }
-          } else {
-            //IF USER DOES HAVE A CART, DISPATCH IT  
-            dispatch(syncCart(res.data))
-          }
-
-        } catch (error) {
-          console.log('notworking');
-          console.log(error);
-        }
-      }
-    }
-    getMyCart()
-  }, [user, user?._id, dispatch])
-
-
-
-
-
-  useEffect(() => {
-
-    const getMyWish = async () => {
-      if (user != null) {
-        //IF USER LOGGED IN CHECK FOR THEIR WISH LIST
-        try {
-          let wish = await userRequest.get('/carts/find/Wish/' + user._id)
-          if (wish.data === null) {
-            //IF USER DOES NOT HAVE A WISH LIST, CREATE ONE
-            try {
-              wish = await userRequest.post('/carts/Wish',
-                {
-                  "userId": user._id,
-                  "products": [],
-                  "amount": 0
-                })
-            } catch (error) {
-              console.log(error);
-            }
-          } else {
-            //IF USER DOES HAVE A WISH LIST, DISPATCH IT           
-            dispatch(syncWish(wish.data))
-          }
-        } catch (error) {
-          console.log('notworking');
-        }
-      }
-    }
-    getMyWish()
-  }, [user, user?._id, dispatch])
-
-
-  // console.log('in app');
+  // {isDesktop ? null :
+  //   <SideMenu />}
 
   return (
     <>
@@ -150,12 +145,11 @@ const App = () => {
         <Navbar />
         <Announcement2 />
         <NavMobile />
-
         <Routes>
 
           <Route exact path="/" element={<Home />} />
-          <Route path="/login" element={user ? <Navigate to={"/"} /> : <Login />} />
-          <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
+          <Route path="/login" element={!tempUser? <Navigate to={"/"} /> : <Login />} />
+          <Route path="/register" element={!tempUser ? <Navigate to="/" /> : <Register />} />
 
           <Route path="/wholesale/:id" element={<WholeSale />} />
           <Route path="/wholesalelist/" element={<WholeSaleList />} />
@@ -163,7 +157,7 @@ const App = () => {
           <Route path="/product/:id" element={<Product />} />
           <Route path="/productlist2/:category" element={<ProductList2 />} />
 
-          <Route path="/photoGallery/" element={<PhotoGallery />} />
+          <Route path="/photoGallery/:id" element={<PhotoGallery />} />
 
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
@@ -173,8 +167,7 @@ const App = () => {
 
         </Routes>
 
-        {isDesktop ? null :
-          <SideMenu />}
+        
         <ScrollToTop />
         <Footer />
       </Router>

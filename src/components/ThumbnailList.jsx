@@ -35,10 +35,12 @@ const Thumbnail = styled.img`
     border: 2px solid ${props => props.color};
     width: 50px;
     box-shadow: 2px 2px 8px rgba(0,0,0,.5);
+    transform: ${props => props.scale};
 
   :hover { 
-    transform: scale(1.1);
+    /* transform: scale(1.1);
     cursor:pointer;
+    border: 2px solid ${props => props.color}; */
     }
 `
 const Image = styled.img`
@@ -50,43 +52,37 @@ const Image = styled.img`
 export const ThumbNailList = (thumbNails) => {
 
 
-    const dispatch = useDispatch()
-    // console.log(thumbNails);
-    const currentPhoto = useSelector(state => state.photo.currentPhoto)
-    const [currPhotoBorder, setCurrPhotoBorder] = useState(thumbNails.dotIndex)
-    const thumbNailPhotosRaw = useSelector(state => state.photo.photoThumbNails)
+    const dispatch = useDispatch()   
     const dotInde = useSelector(state => state.photo.dotIndex)
+    const currentPhoto = useSelector(state => state.photo.currentPhoto)    
+    const thumbNailPhotosRaw = useSelector(state => state.photo.photoThumbNails)   
+    const [currPhotoBorder, setCurrPhotoBorder] = useState(thumbNails.dotIndex)
 
     const handlePhoto = (photo, idx) => {
-        let newThumbs = []
-        // console.log("here");
+        let newThumbs = []        
         thumbNails?.data?.map((thumb) => (
             newThumbs.push(thumb)
-        ))
-        // console.log(currentPhoto);
-        // console.log(newThumbs);
-        // newThumbs.splice(idx, 1, currentPhoto)
-
+        ))       
         setCurrPhotoBorder(idx)
         dispatch(setDotIndex(idx))
         dispatch(setMainPhoto(photo))
         dispatch(setThumbnails(newThumbs))     
-
     }
     useEffect(() => {
-
-    }, []);
-
-   
+        dispatch(setDotIndex(0))
+    }, [])
+    
     const photos = thumbNails.data
     return (
         <ThumbnailDiv >
             <ThumbnailList>
                 {photos?.map((photo, idx) => (
-                    <ThumbnailItems key={idx} onClick={(e) => handlePhoto(photo, idx)}>
+                    <ThumbnailItems key={idx} >
                         <Thumbnail
                             src={photo}
-                            color={idx == thumbNails.dotIndex? "blue" : null }
+                            onClick={(e) => handlePhoto(photo, idx)}
+                            color={idx == dotInde? "blue" : null }
+                            scale={idx == dotInde? "scale(1.1)" : null }
                             alt={`Thumbnail ${idx} of ${thumbNails.length}`}
                         />
                     </ThumbnailItems>

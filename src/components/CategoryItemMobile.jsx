@@ -28,14 +28,15 @@ const Info = styled.div`
     top:0;
     left:0;
     height: 100%;
-    width: calc(100vw% - 3);
+    width:100%;   
     display: flex;
     /* background-color:purple; */
     flex-direction:column;
     align-items: center;
     justify-content: center;
     text-align:center;
-`
+    
+` 
 const Title = styled.h1`
     color: white;
     margin-bottom: 20px;
@@ -44,6 +45,8 @@ const Title = styled.h1`
 `
 const Button = styled.button`
     border: none;
+    /* width:20vw;
+    height: 5vw; */
     padding: 10px;
     background-color: white;
     color: grey;
@@ -56,7 +59,7 @@ const Button = styled.button`
 
 const CategoryItemMobile = ({item}) => {
   return (
-    <Container>        
+    <Container >        
         <Link to={`/productlist2/${item.cat}`} state={item.cat}>
         <Image src={item.img}/>
         <Info>  
@@ -65,7 +68,6 @@ const CategoryItemMobile = ({item}) => {
             </Title>
             <Button>SHOP NOW</Button>
         </Info>
-
         </Link>
     </Container>
   )

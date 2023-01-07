@@ -81,6 +81,9 @@ const ProductDetail = styled.div`
 
 const Image = styled.img`
   width: 200px;
+  ${mobile({
+  width: "25vw"
+})}
 `;
 
 const Details = styled.div`
@@ -110,8 +113,14 @@ const PriceDetail = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border-bottom: 2px solid rgba(0,0,0.5);
+  margin-bottom:20px;
 `;
-
+const QuantityPriceDiv = styled.div` 
+${mobile({
+  display: "flex"
+})}
+`
 const ProductAmountContainer = styled.div`
   display: flex;
   align-items: center;
@@ -126,8 +135,11 @@ const ProductAmount = styled.div`
 
 const ProductPrice = styled.div`
   font-size: 30px;
-  font-weight: 200;
-  ${mobile({ marginBottom: "20px" })}
+  font-weight: bold;
+  ${mobile({
+  marginLeft: "20px",
+  marginBottom: "20px"
+})}
 `;
 
 // const Hr = styled.hr`
@@ -168,6 +180,7 @@ const Button = styled.button`
   color: white;
   font-weight: 600;
   border-radius: 10px;
+  margin-bottom:15px;
 `;
 const Button2 = styled.button`
   width: 100px;
@@ -189,7 +202,11 @@ const Cart = () => {
   const wish = useSelector(state => state.wish)
   const currProduct = useSelector(state => state.menu.currProduct)
 
+  console.log(cart);
+
   const user = useSelector((state) => state.user.currentUser)
+  const tempUser = useSelector((state) => state.user.tempUser)
+
   const [stripeToken, setStripeToken] = useState(null);
   const navigate = useNavigate()
   // const [myCart, setMyCart] = useState(cart)
@@ -206,7 +223,7 @@ const Cart = () => {
 
   const [PKEY, setPKEY] = useState('')
   //  console.log(currProduct);
-  // console.log(process.env.REACT_APP_PAYPAL_KEY );
+
 
   const dispatch = useDispatch()
 
@@ -234,7 +251,7 @@ const Cart = () => {
   }
 
   const handleItemCount = async (productId, action, quan) => {
-    // console.log(action);
+    console.log(action);
     let res = {}
     // update cart
     try {
@@ -263,18 +280,22 @@ const Cart = () => {
 
   useEffect(() => {
     const getPKEY = async () => {
-
+      
+   if(!tempUser){  
       try {
         // console.log('try PKEY');
-        const res = await userRequest.get('/orders/PKEY/' + user._id)
+        const res = await userRequest.get('/orders/PKEY/' + user?._id)
         // console.log(res.data) 
         setPKEY(res.data)
         setIsLoading(false)
       } catch (error) {
       }
     }
+    setIsLoading(false)
+    }
+    
     getPKEY()
-  }, [PKEY, user._id])
+  }, [PKEY, user?._id])
 
   useEffect(() => {
     const makeRequest = async () => {
@@ -324,7 +345,7 @@ const Cart = () => {
 
     // </StripeCheckout>             
 
-    stripeToken && cart.total >= 1 && makeRequest()
+    // stripeToken && cart.total >= 1 && makeRequest()
   }, [stripeToken, cart.total, navigate, cart])
 
 
@@ -360,40 +381,51 @@ const Cart = () => {
                     <Button2 disabled={toggle} onClick={() => { window.location.href = "/register" }}>REGISTER</Button2>
                   </>
                   : <>
-                    {cart && cart.products.length === 0 ? <><p>No Items in Cart</p></> : cart && cart.products.map((product, index) => (
-                      <Product key={product._id + index}>
-                        <ProductDetail>
-                          <Link to={product.isDesign === true ? `/wholesale/${product._id}` : `/product/${product._id}`} state={product}>
-                            <Image src={product.img} />
-                          </Link>
-                          <Details>
-                            <ProductName>
-                              <b>Product:</b> {product.title}
-                            </ProductName>
-                            <ProductId>
-                              <b>ID:</b> {product._id}
-                            </ProductId>
-                            <ProductColor color={product.color} />
-                            <ProductSize>
-                              <b>Size:</b> {product.isDesign}
-                            </ProductSize>
-                          </Details>
-                        </ProductDetail>
-                        <PriceDetail>
-                          <ProductAmountContainer>
-                            <Remove onClick={() => { handleItemCount(index, 'sub', 1) }} />
-                            <ProductAmount>{product.quantity}</ProductAmount>
-                            <Add onClick={() => { handleItemCount(index, 'add', 1) }} />
-                          </ProductAmountContainer>
-                          <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
-                          <Button disabled={toggle} onClick={() => {
-                            setToggle(true);
-                            handleItemCount(index, 'delete', product.quantity).then(() => setToggle(false))
-                          }}>Remove</Button>
+                    {cart && cart.products.length === 0
+                      ?
+                      <p>No Items in Cart</p>
+                      :
+                      cart && cart.products.map((product, index) => (
+                        <Product key={product._id + index}>
+                          <ProductDetail>
+                            <Link
+                              to={product.isDesign === true ? `/wholesale/${product._id}` : `/product/${product._id}`}
+                              state={product.productItem}>
+                              <Image src={product.img} />
+                            </Link>
+                            <Details>
+                              <ProductName>
+                                <b>Product:</b> {product.title}
+                              </ProductName>
+                              <ProductId>
+                                <b>ID:</b> {product._id}
+                              </ProductId>
+                              <ProductColor color={product.color} />
+                              <ProductSize>
+                                <b>Size:</b> {product.isDesign}
+                              </ProductSize>
+                            </Details>
+                          </ProductDetail>
+                          <PriceDetail>
+                            <QuantityPriceDiv>
+                              <ProductAmountContainer>
 
-                        </PriceDetail>
-                      </Product>
-                    ))} </>}
+                                <Remove onClick={() => { handleItemCount(index, 'sub', 1) }} />
+                                <ProductAmount>Qty: {product.quantity}</ProductAmount>
+                                <Add onClick={() => { handleItemCount(index, 'add', 1) }} />
+                              </ProductAmountContainer>
+                              <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
+                            </QuantityPriceDiv>
+                            <Button disabled={toggle} onClick={() => {
+                              setToggle(true);
+                              handleItemCount(index, 'delete', product.quantity).then(() => setToggle(false))
+                            }}>Remove</Button>
+
+                          </PriceDetail>
+                        </Product>
+                      ))}
+                  </>
+                }
               </Info>
               <Summary>
                 <SummaryTitle>ORDER SUMMARY</SummaryTitle>

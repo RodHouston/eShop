@@ -18,6 +18,11 @@ const Container = styled.div`
       flexDirection:'column'
       })}
 `
+const SectionTitle = styled.h4` 
+margin-top: 10px;
+margin-left: 10px;
+text-decoration:none;
+`
 
 const Products = ({cat, gen, filters, sort}) => {
   
@@ -36,6 +41,7 @@ const Products = ({cat, gen, filters, sort}) => {
       }else if(gen === undefined) {
         const res = await userRequest.get("products")      
         setProducts(res.data);  
+        
       }else{
       const res = await userRequest.get(cat ? `products?q=${cat}` :  "products")
       setProducts(res.data.filter(item=> item.gender.includes(gen))); 
@@ -69,12 +75,10 @@ const Products = ({cat, gen, filters, sort}) => {
     )
   } 
  }, [sort])
-//  console.log(gen);
-//  console.log(cat);
-//  console.log(products);
-//  console.log(filteredProducts.length);
+
   return (
     <Container>
+      <SectionTitle>Check Out The Most Popular Products</SectionTitle>
       {cat ? 
         <> 
           {filteredProducts.length > 0 ?

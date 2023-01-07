@@ -114,14 +114,15 @@ const Register = () => {
         e.preventDefault()  
         console.log(user);
         let res = ''
-        try{
-            if(!isWorking){
-                setIsWorking(true)
-                res = await publicRequest.post("users/createUser", user)
-            }           
-        }catch(err){
-            console.log(err);
-        }
+        // try{
+        //     if(!isWorking){
+        //         setIsWorking(true)
+        //         // res = await publicRequest.post("users/createUser", user)
+        //         res = await publicRequest.post("auth/register", user)
+        //     }           
+        // }catch(err){
+        //     console.log(err);
+        // }
         console.log("done working");
         console.log(res);
         setIsWorking(false)

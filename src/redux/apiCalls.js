@@ -5,9 +5,9 @@ import { loginFailure, loginStart, loginSuccess, logOut } from "./userRedux"
 export const login = async (dispatch, user)=>{
     dispatch(loginStart())
     try {        
-        console.log(user);
+        
         const cUser = await publicRequest.post("/auth/login", user)      
-        console.log(cUser.data);
+        
         dispatch(loginSuccess(cUser.data));        
         
     } catch (error) {

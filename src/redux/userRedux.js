@@ -3,10 +3,13 @@ import { createSlice  } from "@reduxjs/toolkit";
 const userSlice = createSlice({
     name: "user",
     initialState: {
-       currentUser: null,
+       currentUser: {
+           _id: window.navigator.userAgent.replace(/\D+/g, '')
+       },
+       tempUser: true,
        isFetching: false,
        error: false
-    },
+    }, 
     reducers:{
         loginReset:(state)=>{
             state.isFetching=false;
@@ -16,6 +19,7 @@ const userSlice = createSlice({
         },
         loginSuccess:(state, action)=>{
             state.isFetching=false;
+            state.tempUser=false;
             state.currentUser=action.payload;
         },
         loginFailure:(state)=>{
@@ -23,7 +27,10 @@ const userSlice = createSlice({
             state.error = true;
         },
         logOut:(state) => {
-            state.currentUser = null
+            state.tempUser = true;
+            state.currentUser = {
+                _id: window.navigator.userAgent.replace(/\D+/g, '')
+            };
             // console.log('here logout');
         }        
     }

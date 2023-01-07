@@ -26,15 +26,16 @@ const Container = styled.div`
     /* height: 60px; */
     /* z-index:2; */
     background-color: white;
-    ${mobile({ height: '125px' })}
+    /* ${mobile({ height: '125px' })} */
 `
 const Wrapper = styled.div`
     padding: 5px 20px;
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-height:50px;
-    ${mobile({ padding: '10px 0', flexDirection: 'column', maxHeight: '125px' })}
+    /* max-height:50px; */
+    ${mobile({ padding: '10px 0', flexDirection: 'column'})}
 `
 const Language = styled.span`
     font-size: 14px;
@@ -78,7 +79,7 @@ const SearchPair = styled.div`
     display:flex;
     flex-grow:0;
     flex-direction:column;
-    position: relative;
+    /* position: relative; */
 `
 const Input = styled.input`
     border: none;
@@ -115,14 +116,14 @@ const Right = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    ${mobile({ flex: 2, justifyContent: "center" })}
+    
 `
 
 const MenuItem = styled.div`
     font-size: 14px;
     cursor:pointer;
     margin-left:25px;
-    ${mobile({ fontSize: "12px", marginLeft: "10px" })}
+    ${mobile({ fontSize: "12px", margin: '10px 20px' })}
 `
 
 const CatNavDiv = styled.div`
@@ -153,8 +154,59 @@ const NavUL = styled.ul`
     text-transform: capitalize;
     font-weight:520;
 `
+const SearchPairMobile = styled.div`
+    display:flex;
+    flex-grow:0;
+    flex-direction:column;
+    width:100%;
+    padding: 10px; 
+    /* background-color:red; */
+    justify-content:center;
+    align-items:center;
+    /* position: relative; */
+`
+const SearchContainerMobile = styled.div`
+    border: 1px solid lightgrey;
+    box-shadow: 2px 2px 10px rgba(0,0,0,.2);
+    border-radius: 5px;
+    display: flex;
+    width: 80vw;
+    position: relative;
+    justify-content:center;
+    align-items: center; 
+    padding: 5px;
+`
+const SearchDivMobile = styled.div`
+    position: absolute;    
+    height: 100vh;
+    width: 100vw;
+    padding: 10px;    
+    top: 30px;
+    left:0;
+    background-color: rgba(0,0,0,.8);
+    z-index:11;
+  
+    scrollbar-width: none;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+        display: none;
+      }
+`
+
+const SearchResultsImageMobile = styled.img`
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+`
+const SearchResultsMobile = styled.p`
+    color: white;
+`
 
 
+const InputMobile = styled.input`
+    border: none;
+    // ${mobile({ width: "80vw" })}
+`
 const Navbar = () => {
 
 
@@ -166,6 +218,7 @@ const Navbar = () => {
     //   const {isFetching, error} = useSelector((state) => state.user)
 
     const user = useSelector((state) => state.user.currentUser)
+    const tempUser = useSelector((state) => state.user.tempUser)
     const toggle = useSelector((state) => state.menu.dropDownMenu)
 
     const [filteredProducts, setFilteredProducts] = useState([])
@@ -221,16 +274,21 @@ const Navbar = () => {
 
     const handleLogout = async (e) => {
         e.preventDefault()
+        let isWorking = false
         try {
+            isWorking = true;
             console.log("logginout");
             await dispatch(clearCart())
             await dispatch(clearWish())
             // dispatch(syncCart(myCart))
             await logout(dispatch)
+            isWorking = false
         } catch (error) {
 
         }
+        if(!isWorking){
         window.location.href = "/"
+        }
     }
 
 
@@ -288,16 +346,16 @@ const Navbar = () => {
         //  console.log(categories);
         // console.log('in nav');
         getProduct()
-    }, [wordSearch, toggle])
+    }, [wordSearch, toggle, cart])
 
 
     //    console.log('in navbar');
+    // <SideMenu />
     return (
         <>
             <Container>
                 <Wrapper>
-                    <Left>
-                        <SideMenu />
+                    <Left>                       
                         <Language>
                             EN
                         </Language>
@@ -319,13 +377,13 @@ const Navbar = () => {
                         </SearchPair>
 
                     </Left>
-                    <Center>
+                    <Center onClick={() => { window.location.href = "/" }}>
                         <Logo src='../Photos/c&Slogo.png'></Logo>
-                        <LogoText onClick={() => { window.location.href = "/" }}>Classy & Sassy</LogoText>
+                        <LogoText >Classy & Sassy</LogoText>
 
                     </Center>
                     <Right>
-                        {user ? <>
+                        {!tempUser ? <>
                             <p>Welcome {user.username}</p>
 
                             {user.isWholesale ? <>
@@ -350,7 +408,7 @@ const Navbar = () => {
                             </Link>
                         </>
                         }
-                        {user ? <>
+                        {!tempUser ? <>
                             <MenuItem onClick={handleLogout}>
                                 LogOut
                             </MenuItem>
@@ -363,6 +421,22 @@ const Navbar = () => {
                         </MenuItem>
 
                     </Right>
+                    <SearchPairMobile>
+                            <SearchContainerMobile>
+                                <InputMobile placeholder='SEARCH' value={wordSearch} onChange={handleChange} />
+                                {!wordSearch ? <Search style={{ color: 'grey', fontSize: 16 }} /> :
+                                    <CloseIcon style={{ color: 'grey', fontSize: 16, cursor: 'pointer' }} onClick={handleClear} />}
+                            </SearchContainerMobile>
+                            {filteredProducts.length > 0 && (
+                                <SearchDivMobile>
+                                    {filteredProducts.slice(0, 5).map((pro, index) => (
+                                        <div key={index} onClick={() => { window.location.href = `/product/${pro._id}` }} >
+                                            <SearchResultsImageMobile src={pro.img} />
+                                            <SearchResultsMobile key={index + pro.title}>{pro.title}</SearchResultsMobile>
+                                        </div>
+                                    ))}
+                                </SearchDivMobile>)}
+                        </SearchPairMobile>
                 </Wrapper>
                 <CatNavDiv>
                     <NavUL>
@@ -370,8 +444,7 @@ const Navbar = () => {
                             
                             <CategoryLinks key={index} 
                             bg={cat.cat === cata.cat && 'teal'} 
-                            onMouseOver={(e) => { setOpenDropDown(cat) }}
-                            onClick={(e)=> navigate(`/productlist2/${cat.cat}`)}
+                            onClick={(e) => { setOpenDropDown(cat) }}                           
                             >                                
                                 {cat.cat}        
                             </CategoryLinks>

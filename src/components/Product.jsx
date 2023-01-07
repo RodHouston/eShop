@@ -119,8 +119,7 @@ const Product = ({item}) => {
   return (
       <>
      
-    <Container>
-        
+    <Container>      
       
         <Image src={item.img}/>
         <Link to={ item.isDesign ? `/wholesale/${item._id}` :`/product/${item._id}`} state={item}>
