@@ -31,8 +31,8 @@ const ContainerEffect = styled.div`
    z-index:1;
 `
 const Arrow = styled.div`
-    width: 50px;
-    height: 50px;
+    width: 8vw;
+    height: 8vw;
     background-color: whitesmoke;
     border-radius: 50%;
     display: flex;
@@ -42,8 +42,8 @@ const Arrow = styled.div`
     top:0;
     bottom: 0; 
     margin: auto;
-    left: ${props => props.direction === 'left' && '10px'};
-    right: ${props => props.direction === 'right' && '10px'};
+    left: ${props => props.direction === 'left' && '2vw'};
+    right: ${props => props.direction === 'right' && '2vw'};
     cursor: pointer;
     opacity: .1;
     z-index:1;    
@@ -81,30 +81,30 @@ const Image = styled.img`
     transition: all 1s ease-in-out;
 `
 const InfoContainer = styled.div`
-    padding: 50px;
+    padding: 8vw;
     flex:1;    
     position: absolute;  
     opacity:.5;
 `
 const Title = styled.h1`
-    font-size: 70px;
+    font-size: 14vw;
     position: absolute;      
     transform: translateX(${(props) => props.slide});
     transition: all 2s ease-in-out;
 `
 const Desc = styled.p`
-    margin: 50px 0px;
-    font-size:20px;
+    margin: 8vw 0vw;
+    font-size:4vw;
     font-weight: bold;
-    letter-spacing: 3px;
+    letter-spacing: .8vw;
     color:white;
     /* z-index:2;   */
     transform: translateX(${(props) => props.slide});
     transition: all 2.5s ease-in-out;
 `
 const Button = styled.button`
-    padding: 10px;
-    font-size: 20px;
+    padding: 2vw;
+    font-size: 4vw;
     background-color: transparent;
     cursor: pointer;
 `
@@ -117,16 +117,16 @@ const DotDiv = styled.div`
     top: 5vh;
     left:0;
     right:0;
-    padding-bottom:10px;
+    padding-bottom:2vw;
     z-index:1;
     `
 
 const Dots = styled.div`
-  height: 10px;
-  width: 10px;
+  height: 2vw;
+  width: 2vw;
   border-radius: 50%;
   cursor: pointer;
-  margin: 10px 7px 0px;  
+  margin: 2vw 1.5vw 0vw;  
   background-color: ${props => props.bgColor};
   
   `

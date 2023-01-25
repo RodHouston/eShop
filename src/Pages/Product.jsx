@@ -354,7 +354,7 @@ const Product = () => {
 
     setPreview('open')
     setMess(`Successfully added to ${location}`)
-    loc.products.map((product, index) => {
+    loc.products?.map((product, index) => {
 
       if (product._id === item._id && product.color === color && product.size === size) {
         console.log('match')
@@ -455,7 +455,7 @@ const Product = () => {
             </ImgContainer > 
             <ThumbNailList data={thumbNailPhotos} dotIndex={dotInde} />
             <DotDiv>
-              {thumbNailPhotos.map((_, idx) => (
+              {thumbNailPhotos?.map((_, idx) => (
                 <Dots
                   key={idx}
                   bgColor={dotInde === idx ? "teal" : "#c4c4c4"}

@@ -9,6 +9,7 @@ import Product from "./Pages/Product";
 import Wishlist from "./Pages/Wishlist";
 import Register from "./Pages/Register";
 import WholeSale from "./Pages/WholeSale";
+import ProfilePage from "./Pages/ProfilePage";
 import PhotoGallery from "./Pages/PhotoGallery";
 import ProductList2 from "./Pages/ProductList2";
 import WholeSaleList from "./Pages/WholeSaleList";
@@ -32,21 +33,23 @@ const App = () => {
 
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user.currentUser)
-  const tempUser = useSelector((state) => state.user.tempUser)
+  const tempUser = useSelector((state) => state.user.tempUser) 
+  
+console.log(tempUser);
   const [isDesktop, setDesktop] = useState(window.innerWidth > 735)
 
-  // console.log(user);
   const updateMedia = () => {
     setDesktop(window.innerWidth > 735);
   };
 
+  
   useEffect(() => {
     window.addEventListener("resize", updateMedia);
     return () => window.removeEventListener("resize", updateMedia);
   });
 
   useEffect(() => {
-    const getGlobalData = async () => {
+    const getGlobalData = async () => {      
 
       try {
         const res = await publicRequest.get("/photoGallery")
@@ -66,6 +69,7 @@ const App = () => {
       }
 
     }
+    console.log("In APP");
     getGlobalData()
   }, [user])
 
@@ -150,6 +154,7 @@ const App = () => {
           <Route exact path="/" element={<Home />} />
           <Route path="/login" element={!tempUser? <Navigate to={"/"} /> : <Login />} />
           <Route path="/register" element={!tempUser ? <Navigate to="/" /> : <Register />} />
+          <Route path="/profile" element={!tempUser ? <Navigate to="/" /> : <ProfilePage />} />
 
           <Route path="/wholesale/:id" element={<WholeSale />} />
           <Route path="/wholesalelist/" element={<WholeSaleList />} />

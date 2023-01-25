@@ -7,10 +7,10 @@ import { mobile } from "../responsive";
 import Product from "./Product";
 
 const Container = styled.div`
-    padding: 20px;
+    padding: 6vw;
     display: grid;
     grid-template-columns: auto auto auto;
-    gap: 10px;
+    gap: 6vw;
     justify-content: space-between;  
     margin: 0 auto;   
     ${mobile({ 
@@ -19,9 +19,11 @@ const Container = styled.div`
       })}
 `
 const SectionTitle = styled.h4` 
-margin-top: 10px;
-margin-left: 10px;
+margin-top: 6vw;
+margin-left: 6vw;
 text-decoration:none;
+font-size:5vw;
+text-align:center;
 `
 
 const Products = ({cat, gen, filters, sort}) => {

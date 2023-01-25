@@ -80,15 +80,13 @@ const MenuIconDiv = styled.div`
     border-radius:50%;
     justify-content:center;
     align-items:center;
-    height: 30px;
-    width: 30px;
-    padding:5px;
-    top: 80px;
+    height: 7vw;
+    width: 7vw;
+    padding:1vw;
+    top: 15vw;
     left:0;
     z-index:12;
-    ${mobile({ position: "fixed" })}
-    /* background-color: rgba(0,0,0,.2); */
-    /* border-bottom: 2px solid rgba(0,0,0,.2); */
+    ${mobile({ position: "fixed" })}   
 `
 
 

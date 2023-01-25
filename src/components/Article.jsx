@@ -1,59 +1,66 @@
+import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 
 
 const Container = styled.div`    
-width:100vw;
-box-sizing: border-box;
-    background-color: whitesmoke;
+    width:100vw;
+    box-sizing: border-box;
+    background-color: ${(props) => props.bg};
     display:flex;
     flex-direction:column;    
     align-items: center; 
     justify-content: center;   
     padding: 10vw;
+    font-size:4vw;
+    
 `
 const ArticleDiv = styled.article`
-margin: 10px 0;`
+margin: 2vw 0;`
 
 const ArticleTitle = styled.h2`
 text-align: center;
-margin-bottom: 10px;
+margin-bottom: 2vw;
 `
 const ArticleText = styled.p`
- text-indent: 30px;
+ text-indent: 7vw;
  line-height:1.5;
  text-align: justify;
 `
 const LinkStyled = styled(Link)`
-color:teal;
+color:${(props) => props.color};
 `
 
 const ArticleDivRight = styled.article`
-margin: 10px 0;
+margin: 2vw 0;
 text-align:center;
 `
 const ImageRight = styled.img` 
 max-width:40vw;
 max-height:10vh;
 float: left;
-margin-right: 10px;
+margin-right: 2vw;
 `
 const ArticleTextRight = styled.p`
- /* text-indent: 30px; */
+ /* text-indent: 7vw; */
  line-height:1.5;
  text-align: justify;
 `
 
 
 const Article = () => {
+
+  const mainColor = useSelector((state) => state.theme.mainColor)
+  const mainSecondaryColor = useSelector((state) => state.theme.mainSecondaryColor)
+  const mainAccentColor = useSelector((state) => state.theme.mainAccentColor)
   return (
-    <Container>
+    <Container bg={mainSecondaryColor}>
       <ArticleDiv>
         <ArticleTitle>Top Stylish Tips For The Fashion Challenged</ArticleTitle>
         <ArticleText>
           Are you one of those people who have no idea what to wear? Do you find it difficult to plan your clothing choices for the
           following week or evenday? Do you have a tough time mixing andmatching colors? If so, then you will benefitgreatly from the advice
-          in the <LinkStyled to="/">following fashion article.</LinkStyled>
+          in the <LinkStyled color={mainAccentColor} to="/">following fashion article.</LinkStyled>
         </ArticleText>
       </ArticleDiv>
 

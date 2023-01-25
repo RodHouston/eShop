@@ -5,23 +5,23 @@ import { useNavigate } from "react-router-dom";
 const Container = styled.div`
     position:sticky;
     top:0;
-    height: 15px;
+    height: 5vw;
     background-color: teal;
     display:flex;
     color: white;
     align-items: center; 
     justify-content: left;
-    font-size: 14px;
+    font-size: 3vw;
     font-weight: bold;
-    border-bottom: 4px solid white;
-    box-shadow: 0 5px 8px rgba(0,0,0,.3);
+    border-bottom: 1vw solid white;
+    box-shadow: 0 1vw 1.5vw rgba(0,0,0,.3);
     
     z-index:10;
     width:100vw;
 `
 const LinkToDesigns= styled.span`
   text-decoration:underline;
-  margin-left:5px;
+  margin-left:1vw;
   cursor: pointer;
     &:hover{
         transform: scale(1.1);        

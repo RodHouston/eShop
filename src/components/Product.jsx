@@ -23,15 +23,15 @@ const Info = styled.div`
 
 const Container = styled.div`
     box-sizing:border-box;   
-    margin:5px auto;
-    height: 350px;
-    width:275px;   
+    margin:1vw auto;
+    height: 80vw;
+    width:60vw;   
     display: flex;
     flex-direction:column;
     /* justify-content:center; */
     align-items:center;
     background-color:#f5fbfd;
-    border: 2px solid rgba(0,0,0,.2);
+    border: .2vw solid rgba(0,0,0,.2);
     position: relative;
     overflow: hidden;
 
@@ -40,8 +40,8 @@ const Container = styled.div`
     }
 `
 const Circle = styled.div`
-    width:200px;
-    height: 200px;
+    width:50vw;
+    height: 50vw;
     border-radius: 50%;
     background-color: white;
     position: absolute;
@@ -53,14 +53,14 @@ const Image = styled.img`
 `
 
 const Icon = styled.div`
-    width: 40px;
-    height:40px;
+    width: 7.5vw;
+    height:7.5vw;
     border-radius: 50%;
     background-color: white;
     display: flex;
     align-items:center;
     justify-content: center;
-    margin: 10px;
+    margin: 2vw;
     transition: all 0.5s ease;
     cursor: pointer;
 
@@ -74,36 +74,36 @@ const InfoDiv = styled.div`
     position:relative;
     flex-direction:column;
     box-sizing:border-box;
-    padding: 5px;
+    padding: 1vw;
     width: 100%;
     height: 50%;
     
     /* background-color:rgba(0,0,0,.2); */
 `
 const Price = styled.p`
-    font-size: 16px;
+    font-size: 3.5vw;
     font-weight: bold;
     color: teal;
-    margin-bottom: 5px;
+    margin-bottom: 1vw;
 `
 const SalePrice = styled.p`
-    font-size: 16px;
+    font-size: 3.5vw;
     font-weight: bold;
     color: red;
-    margin-bottom: 5px;
+    margin-bottom: 1vw;
 `
 const RegPrice = styled.p`
-    font-size: 14px;
+    font-size: 3vw;
     text-decoration: line-through;
-    margin-bottom: 5px;
+    margin-bottom: 1vw;
 `
 const Title = styled.p`
-    font-size:12px;
+    font-size:3vw;
     font-weight: bold;
     color:rgba(0,0,0,.6);    
 `
 const Desc = styled.p`
-    font-size:14px;
+    font-size:3vw;
     font-weight: bold;      
 `
 

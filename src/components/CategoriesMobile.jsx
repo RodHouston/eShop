@@ -17,8 +17,7 @@ const Container = styled.div`
     display: none;
     width: ${(props) => props.width}vw;
     position: relative;
-    justify-content: space-between;
-    /* padding:20px; */
+    justify-content: space-between;    
     background-image: linear-gradient( rgba(225,225,225,.0), rgba(225,225,225,1));
     overflow: hidden;   
     ${mobile({ display: "flex"})} 
@@ -33,7 +32,7 @@ const CategoriesMobile = () => {
   return (
     <Window>
       <Container width= {categories1.length*40}>
-        {categories1.map((item, index) => (
+        {categories1?.map((item, index) => (
           <CategoryItem item={item} key={item._id + index} />
         ))}
       </Container>

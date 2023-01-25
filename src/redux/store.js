@@ -5,6 +5,7 @@ import wishReducer from './wishRedux'
 import menuReducer from "./sideMenuRedux";
 import photoReducer from "./photoRedux";
 import globalReducer from "./globalRedux"
+import themeReducer from "./themeRedux";
 
 import {
     persistStore,
@@ -32,6 +33,7 @@ import {
       menu: menuReducer,
       photo: photoReducer,
       global: globalReducer,
+      theme: themeReducer,
     });
   
   const persistedReducer = persistReducer(persistConfig, rootReducer);

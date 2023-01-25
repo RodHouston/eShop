@@ -7,21 +7,21 @@ import { Link } from 'react-router-dom'
 
 const Container = styled.div`
     flex: 1;
-    margin: 5px;
+    margin: 1vw;
     /* height: 50vh; */
     width: calc(100vw - 3);
     position: relative;
-    border-radius: 15px;
-  
+    border-radius: 2.5vw;
+    font-size: 3vw;
 `
 const Image = styled.img`
     width: 100%;
     height: 100%;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: 2vw;
+    border-top-right-radius: 2vw;
     object-fit: cover;
     ${mobile({ height: "20vh" })}
-    box-shadow: -1px 1px 10px black;
+    box-shadow: -.1vw .1vw 2vw black;
 `
 const Info = styled.div`
     position: absolute;
@@ -39,20 +39,21 @@ const Info = styled.div`
 ` 
 const Title = styled.h1`
     color: white;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 8px black;
+    margin-bottom: 6vw;
+    text-shadow: .5vw .5vw 1.5vw black;
    
 `
 const Button = styled.button`
     border: none;
     /* width:20vw;
     height: 5vw; */
-    padding: 10px;
+    font-size: 3vw;
+    padding: 2vw;
     background-color: white;
     color: grey;
     cursor: pointer;
     font-weight: 600;
-    box-shadow: 2px 2px 5px black;
+    box-shadow: .5vw .5vw 1vw black;
     opacity: .7;
 `
 

@@ -142,7 +142,7 @@ const ProductList2 = () => {
                 {sub?.map((cats, index) => (
                     <div key={index}>
                     <CatTitle >{Object.values(cats)[1]}</CatTitle>
-                    <Cat>{Object.values(cats)[0].map((cat, index) => (
+                    <Cat>{Object.values(cats)[0]?.map((cat, index) => (
                        <p key={index}>{cat}</p> 
                     ))}</Cat>
                     </div>

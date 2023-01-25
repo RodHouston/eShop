@@ -20,7 +20,7 @@ const Home = () => {
         <GallerySliderMobile/>
         <Article/>
         <Categories/>
-        <Products/>
+        {/* <Products/> */}
         <Newletter/>       
     </div>
     

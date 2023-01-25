@@ -10,14 +10,15 @@ import { publicRequest } from '../RequestMethods'
 const Container = styled.div`
     display: flex;
     justify-content: space-between;
-    padding:20px;
-    ${mobile({ padding: "0px", flexDirection: "column" })}
+    padding:6vw;
+    ${mobile({ padding: "0vw", flexDirection: "column" })}
     
 `;
 
 
 const Categories = () => {
 
+  
   const categories1 = useSelector((state) => state.global.categories)
   const [cats, setCats] = useState([])
   const dispatch = useDispatch()

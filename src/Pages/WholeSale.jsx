@@ -277,7 +277,7 @@ const WholeSale = () => {
 
       setPreview('open')     
       setMess(`Successfully added to ${location}`)
-      loc.products.map((product, index) => { 
+      loc.products?.map((product, index) => { 
          if(product._id === item._id && product.color === color && product.size === size){           
             console.log('match')
             setMess(`Item Already In ${location}`)

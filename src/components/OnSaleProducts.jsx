@@ -5,7 +5,7 @@ import styled from "styled-components"
 import { userRequest } from "../RequestMethods";
 import { mobile } from "../responsive";
 // import { popularProducts } from "../data"
-import Product from "./Product";
+
 import StarIcon from '../utilities/StarIcon';
 
 
@@ -27,16 +27,16 @@ const Info = styled.div`
 
 const Container = styled.div`
      box-sizing:border-box;   
-     margin:5px auto;
+     margin:1vw auto;
      padding-top:5vw;
-     height: 50vh;
+     height: 120vw;
      width:100vw;   
      display: flex;
      flex-direction:row;
      flex-wrap: wrap;
      justify-content:center;
      align-items:center;    
-     border: 2px solid rgba(0,0,0,.2);
+     border: .2vw solid rgba(0,0,0,.2);
      position: relative;
      /* overflow: scroll;    */
      background-color:GhostWhite;       
@@ -48,20 +48,20 @@ const Container = styled.div`
 })}
 `
 const OnSaleMessage = styled.p`
-    font-size: 16px;
+    font-size: 3.5vw;
     font-weight: bold;
     color: teal;
-    margin-bottom: 10px;
+    margin-bottom: 1vw;
 `
 const ProductDiv = styled.div`
 position:relative; 
-margin:10px;
+margin:1vw;
 height: 20vw;
 width:20vw;   
-border: 2px solid rgba(0,0,0,.2);
+border: .2vw solid rgba(0,0,0,.2);
 position: relative;
 background-color:rgba(0,128,128.2);
-box-shadow: 2px 2px 10px rgba(0,0,0,.5);
+box-shadow: .2vw .2vw 1vw rgba(0,0,0,.5);
 ${mobile({
   display: "flex",
   flexDirection: 'row',
@@ -95,8 +95,8 @@ const SaleIconDiv = styled.div`
     display:flex;
     position:absolute;
     flex-shrink:1;
-    top:-5px;
-    right:-15px;
+    top:-1vw;
+    right:-3vw;
     width: 40%;
     height:20%;
     transform: rotate(25deg);
@@ -110,9 +110,9 @@ const SaleIcon = styled.div`
     width: 100%;
     height: 100%;   
     border-radius: 50%;
-    border: 2px solid rgba(225, 225, 225, 1) ;
+    border: .2vw solid rgba(225, 225, 225, 1) ;
     background-color: rgba(255,127,80,.7);
-    box-shadow: 2px 2px 10px rgba(0,0,0,.8);
+    box-shadow: .2vw .2vw 1vw rgba(0,0,0,.8);
     color:white;
     /* font-size: 2vw; */
     font-weight:bolder;
@@ -128,14 +128,14 @@ const SaleIcon = styled.div`
 })}
     `
 const Icon = styled.div`
-    width: 40px;
-    height:40px;
+    width: 8vw;
+    height:8vw;
     border-radius: 50%;
     background-color: white;
     display: flex;
     align-items:center;
     justify-content: center;
-    margin: 10px;
+    margin: 1vw;
     transition: all 0.5s ease;
     cursor: pointer;
 
@@ -149,36 +149,34 @@ const InfoDiv = styled.div`
     position:relative;
     flex-direction:column;
     box-sizing:border-box;
-    padding: 5px;
+    padding: 1vw;
     width: 100%;
     height: 50%;
-    
+    font-size: 3.5vw;
     /* background-color:rgba(0,0,0,.2); */
 `
 const Price = styled.p`
-    font-size: 16px;
+   
     font-weight: bold;
     color: teal;
-    margin-bottom: 5px;
+    margin-bottom:1vx;
 `
-const SalePrice = styled.p`
-    font-size: 16px;
+const SalePrice = styled.p`    
     font-weight: bold;
     color: red;
-    margin-bottom: 5px;
+    margin-bottom: 1vw;
 `
 const RegPrice = styled.p`
-    font-size: 14px;
+    font-size: 3vw;
     text-decoration: line-through;
-    margin-bottom: 5px;
+    margin-bottom: 2vw;
 `
 const Title = styled.p`
-    font-size:12px;
+    
     font-weight: bold;
     color:rgba(0,0,0,.6);    
 `
-const Desc = styled.p`
-    font-size:14px;
+const Desc = styled.p`    
     font-weight: bold;      
 `
 
@@ -191,12 +189,10 @@ const RatingsDiv = styled.div`
 const StarDiv = styled.div`
   display:flex;
   flex-direction:row;
-  margin-left:10px;
-  /* width:40%; */  
- 
+  margin-left:2vw;
   `
 const Stars = styled.div`
-  margin-right: 5px;
+  margin-right: 1vw;
   
   `
 const RatingText = styled.p`

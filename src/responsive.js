@@ -1,8 +1,19 @@
-import {css} from 'styled-components'
+import { css } from 'styled-components'
 
-export const mobile = (props) =>{
+const maxModileW = "1999px"
+const maxModileH = maxModileW
+
+export const mobile = (props) => {
     return css`
-        @media only screen and (max-width: 735px){
+        @media only screen and (max-width: ${maxModileW}){
+            ${props}
+        }
+    `
+}
+
+export const deskTop = (props) => {
+    return css`
+        @media screen and (min-width: 2000px) {   
             ${props}
         }
     `

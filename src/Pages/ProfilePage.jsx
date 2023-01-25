@@ -11,11 +11,6 @@ import { clearCart, syncCart } from '../redux/cartRedux'
 import { Link } from "react-router-dom"
 
 
-import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
-
-const KEY = 'pk_test_51KtGN3AkMYFXtHLuKRHncfevzOCeOYYgb9YVjpontlkVns7Oyei80bmI7ZWNKGzs6jYycEmLW1ffMCiMSaXxdje200B3fxA6Ch'
-//const KEY = process.env.STRIPE_KEY 
-const PKEY = process.env.PAYPAL_KEY
 
 
 const Container = styled.div`
@@ -196,7 +191,7 @@ const PayPalDiv = styled.div`
   z-index:1;
 `
 
-const Cart = () => {
+const ProfilePage = () => {
 
   const cart = useSelector(state => state.cart)
   const wish = useSelector(state => state.wish)
@@ -354,7 +349,7 @@ const Cart = () => {
       {!isLoading &&
         <Container>
           <Wrapper>
-            <Title>YOUR CART</Title>
+            <Title>YOUR Profile</Title>
             <Top>
               {currProduct === undefined ? <Link to={`/productlist/${currProduct?.subCategories[0]}`} state={currProduct?.gender[0]}>
                 <TopButton >CONTINUE SHOPPING</TopButton>
@@ -446,39 +441,7 @@ const Cart = () => {
                   <SummaryItemPrice>$ {cart.total === 0 || cart.total === undefined ? 0 : (cart.total + (shipping - shippingDisc)).toFixed(2)}</SummaryItemPrice>
                 </SummaryItem>
 
-                <PayPalDiv>
-                  <PayPalScriptProvider
-                    options={{
-                      'client-id': PKEY
-                    }}>
-                    <PayPalButtons
-                      disabled={false}
-                      fundingSource={undefined}
-                      createOrder={(data, actions) => {
-                        return actions.order
-                          .create({
-                            purchase_units: [
-                              {
-                                amount: {
-                                  currency_code: currency,
-                                  value: cart.total === 0 || cart.total === undefined ? 0 : (cart.total + (shipping - shippingDisc)).toFixed(2)
-                                },
-                              },
-                            ],
-                          })
-                          .then((orderId) => {
-                            // Your code here after create the order
-                            return orderId;
-                          });
-                      }}
-                      onApprove={(data, actions) => {
-                        return actions.order.capture().then(function (details) {
-                          // Your code here after capture the order
-                          showOrder(details)
-                        });
-                      }} />
-                  </PayPalScriptProvider>
-                </PayPalDiv>
+           
               </Summary>
             </Bottom>
           </Wrapper>
@@ -487,4 +450,4 @@ const Cart = () => {
   )
 }
 
-export default Cart
+export default ProfilePage

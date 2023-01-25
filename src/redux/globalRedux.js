@@ -4,7 +4,8 @@ const globalSlice = createSlice({
     name: "global",
     initialState: {      
        categories: [],       
-       galleries:[]
+       galleries:[], 
+       pathLocation:""
     },
     reducers:{       
         setCategories:(state, action)=>{
@@ -13,7 +14,9 @@ const globalSlice = createSlice({
         setGalleries:(state, action) => {
             state.galleries= action.payload
         },   
-        
+        setGalleries:(state, action) => {
+            state.galleries= action.payload
+        }
     }
 })
 

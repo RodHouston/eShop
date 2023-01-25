@@ -14,8 +14,7 @@ const Container = styled.div`
 `
 const GalleryContainer = styled.div` 
     width:100%;
-    justify-content:center;
-    box-sizing:border-box;
+    justify-content:center;  
     display: flex;
     flex-wrap: wrap;
     flex-direction:row;
@@ -32,7 +31,7 @@ const GalleryUL = styled.div`
     list-style: none;
 
 
-    box-sizing:border-box;
+ 
     padding:0;
     line-height: 0;
   

@@ -9,23 +9,18 @@ import { Link } from 'react-router-dom'
 const Window = styled.div`
     width: 100vw;
     overflow: hidden;
-    overflow-x: scroll;
-    bottom:0; 
+    font-size:3vw;
 `
 const Link1 = styled(Link)`
     color:rgba(215, 215, 215, 1);
-    text-shadow: 2px 2px 10px black;
+    text-shadow: .5vw .5vw 2vw black;
     text-decoration:none;
 `
 const Container = styled.div`
     display: none;
-    /* min-width: 200vw; */
-    /* height:105vw;   */
-    position: relative;
     justify-content: space-between;
-    padding:10px;   
-    overflow: hidden;  
-    
+    padding:2vw;   
+    overflow: scroll;      
     ${mobile({ display: "flex" })}  
     scroll-snap-type: x mandatory;
     overflow-x: scroll;
@@ -34,13 +29,12 @@ const GalleryItemDiv = styled.div`
     display:flex;
     flex-direction:column;
     min-width: 100vw;
-    /* min-height:105vw;   */
     background-color:coral;
     background-image: linear-gradient( rgba(225,225,225,.0), teal);  
 `
 const GalleryItemTitle = styled.h4` 
-    margin-top: 10px;
-    margin-left: 10px;
+    margin-top: 2vw;
+    margin-left: 2vw;
     text-decoration:none;
 `
 const GalleryItem = styled.div`
@@ -58,8 +52,7 @@ const GalleryTitle = styled.h2`
 const PhotoContainer = styled.div`
     display: flex;
     flex-direction:column;
-    box-sizing:border-box;
-    /* flex-wrap: wrap; */
+    box-sizing:border-box;   
     justify-content: space-between;
     align-items:center;
     background-color:rgba(0,0,0,.5);
@@ -73,11 +66,10 @@ const PhotoSlantWindow = styled.div`
     position: relative;
     display:flex;
     justify-content:center;
-    align-items:center;
-    /* background-color:red;  */
-    width:100%;
-    height:100%;     
+    align-items:center;  
     opacity:80%;
+    width:100%;
+    height:100%;  
     overflow: hidden;  
 `
 const PhotoSlantWindowEffect = styled.div` 
@@ -87,30 +79,33 @@ const PhotoSlantWindowEffect = styled.div`
     height:100%;  
     justify-content:center;
     align-items:center;
-    box-shadow: 2px 2px 10px rgba(0,0,0,.8) inset;    
+    box-shadow: .5vw .5vw 2vw rgba(0,0,0,.8) inset;    
     z-index:2;
 `
-const PhotoSlantDiv = styled.div`    
-    width:100%;
-    height:100%;
-    display: grid;
-    position: absolute;
-    grid-template-columns: repeat(4, 1fr);    
-    grid-template-rows: auto;
-    gap:.025em ;   
+const PhotoSlantDiv = styled.div`  
+     column-count: 4; 
+    column-gap: 3vw;     
+    /* height:200vw; */
+    
+    /* background-color:red; */
     transform:rotate(325deg);
     margin:0 auto;
-    top:-20%;
-    left:-25%;
-    z-index:1;
-     /* align-items: stretch; */
+    position: absolute; 
+    margin-top:25vw;
+    /* top:0vw; */
+    /* bottom:10vw; */
+      left:0; 
+    z-index:1;   
+`
+const PhotoSlantRows = styled.div`   
+    margin-top: 2vw;
+    padding-top: ${props => props.stag};   
 `
 const GalleryTextDiv = styled.div`
-    display:flex;
-    box-sizing:border-box;
+    display:flex;   
     flex-direction:column;
     width:100%;
-    height:100px;
+    height:25vw;
     background-color:rgba(20,20,20,.8);
     color:whitesmoke;
     padding: 1vw 5vw;
@@ -125,10 +120,11 @@ const ImageDivs = styled.div`
     background-color:rgba(0,0,0,.8);
     width:20vw;
     height:40vw;
-    border-radius:10px;
+    border-radius:2vw;
     overflow:hidden;
-    margin:2vw;
-    box-shadow: 2px 2px 10px rgba(0,0,0,.8);
+    margin:1vw;
+    margin-top: ${props => props.stag} !important;
+    box-shadow: .5vw .5vw 2vw rgba(0,0,0,.8);  
 `
 
 const Image1 = styled.img`
@@ -156,12 +152,19 @@ const GallerySliderModile = () => {
                         VIEW GALLERY
                       </GalleryTitle>
                     </PhotoSlantWindowEffect>
-                    <PhotoSlantDiv>
+                    <PhotoSlantDiv >
                       {item?.photos?.map((photo, idx) => (
-                        idx <= 10 &&
-                        <ImageDivs key={idx}>
-                          <Image1 src={photo.source} />
-                        </ImageDivs>
+                        idx <= 10 &&      
+                        <PhotoSlantRows key={idx} stag={idx===0| idx ===5 ? "16vw" : "0"}>                       
+                            
+                                
+                              <ImageDivs>
+                                <Image1 src={photo.source} />
+                              </ImageDivs>  
+                                              
+                             
+                              
+                                 </PhotoSlantRows>   
                       ))}
                     </PhotoSlantDiv>
                   </PhotoSlantWindow>
